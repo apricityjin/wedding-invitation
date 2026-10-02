@@ -1,0 +1,2924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>我们结婚啦｜张明 &amp; 李悦的婚礼邀请</title>
+<meta name="description" content="诚邀您见证我们的幸福时刻">
+<!-- Open Graph / 微信分享卡片 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="我们结婚啦｜张明 &amp; 李悦的婚礼邀请">
+<meta property="og:description" content="诚邀您见证我们的幸福时刻">
+<meta property="og:image" content="https://your-domain.com/og-cover.png">
+<meta property="og:url" content="https://your-domain.com/">
+<meta itemprop="name" content="我们结婚啦｜张明 &amp; 李悦的婚礼邀请">
+<meta itemprop="description" content="诚邀您见证我们的幸福时刻">
+<meta itemprop="image" content="https://your-domain.com/og-cover.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Ma+Shan+Zheng&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --gold:#C9A96E;
+  --gold-deep:#A98850;
+  --gold-light:#E8D5B5;
+  --rose:#C98D8B;
+  --rose-light:#F0DCDA;
+  --rose-deep:#B26E6C;
+  --ivory:#FDFBF5;
+  --ink:#5A4A42;
+  --ink-light:#8A7A70;
+  --shadow:0 8px 30px rgba(90,74,66,.10);
+  --serif:'Noto Serif SC','Cormorant Garamond',serif;
+  --hand:'Ma Shan Zheng',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--serif);
+  background:var(--ivory);
+  color:var(--ink);
+  overflow-x:hidden;
+  line-height:1.7;
+}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:16px}
+
+/* ---------- 通用 ---------- */
+.section{
+  position:relative;
+  padding:72px 24px;
+  max-width:960px;
+  margin:0 auto;
+}
+.section-title{
+  text-align:center;
+  margin-bottom:14px;
+}
+.section-title .en{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  letter-spacing:3px;
+  font-size:13px;
+  color:var(--gold);
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:6px;
+}
+.section-title h2{
+  font-family:var(--hand);
+  font-size:34px;
+  font-weight:400;
+  color:var(--ink);
+}
+.title-lines{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:10px auto 40px;
+}
+.title-lines::before,.title-lines::after{
+  content:'';width:56px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+.title-lines::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.title-lines .dot{
+  width:6px;height:6px;transform:rotate(45deg);
+  background:var(--gold);display:inline-block;
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 28px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  color:var(--gold-deep);
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(4px);
+  font-size:15px;
+  letter-spacing:2px;
+  transition:all .3s ease;
+}
+.btn:active,.btn:hover{
+  background:var(--gold);
+  color:#fff;
+  box-shadow:0 6px 18px rgba(201,169,110,.35);
+}
+.btn.small{padding:8px 20px;font-size:13px;letter-spacing:1px}
+
+/* 渐入动画 */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.24s}
+.reveal.d3{transition-delay:.36s}.reveal.d4{transition-delay:.48s}
+
+/* ---------- 花瓣画布 ---------- */
+#petalCanvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:3;
+}
+
+/* ---------- 悬浮按钮 ---------- */
+.float-actions{
+  position:fixed;top:calc(14px + env(safe-area-inset-top));right:14px;
+  display:flex;flex-direction:column;gap:10px;z-index:60;
+}
+.icon-btn{
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--gold);
+  background:rgba(253,251,245,.8);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(90,74,66,.12);
+  transition:transform .2s ease;
+}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:20px;height:20px;stroke:var(--gold-deep);fill:none;stroke-width:1.6}
+#musicBtn .wave{opacity:0}
+#musicBtn .slash{opacity:1;transition:opacity .3s}
+#musicBtn.playing .slash{opacity:0}
+#musicBtn.playing .wave{opacity:1;animation:wave 1.1s ease-in-out infinite}
+@keyframes wave{0%,100%{opacity:.3}50%{opacity:1}}
+#restoreCoverBtn{display:none}
+
+/* ---------- 圆点导航 ---------- */
+.dot-nav{
+  position:fixed;right:10px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:14px;z-index:55;
+}
+.dot-nav button{
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(201,169,110,.35);
+  border:1px solid transparent;
+  transition:all .3s ease;position:relative;
+}
+.dot-nav button.active{
+  background:var(--gold);transform:scale(1.5);
+  box-shadow:0 0 0 4px rgba(201,169,110,.18);
+}
+.dot-nav button::after{
+  content:attr(data-label);
+  position:absolute;right:20px;top:50%;transform:translateY(-50%) translateX(8px);
+  font-size:11px;color:var(--gold-deep);white-space:nowrap;
+  background:rgba(253,251,245,.92);padding:2px 10px;border-radius:12px;
+  border:1px solid var(--gold-light);
+  opacity:0;pointer-events:none;
+  transition:opacity .25s ease-out,transform .25s ease-out;
+}
+/* 标签默认隐藏，仅在板块切换后短暂显示（.peek）或悬停/触摸导航区时显示 */
+.dot-nav.peek button.active::after,
+.dot-nav.touch-show button.active::after,
+.dot-nav:hover button.active::after{
+  opacity:1;transform:translateY(-50%) translateX(0);
+}
+
+/* ---------- 1. 封面 ---------- */
+#cover{
+  min-height:100vh;min-height:100dvh;
+  max-width:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+  background:
+    radial-gradient(ellipse at 20% 15%,rgba(240,220,218,.9),transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(232,213,181,.85),transparent 55%),
+    linear-gradient(160deg,#FDF8F0 0%,#F7E9E4 50%,#F3E4D6 100%);
+  overflow:hidden;
+}
+#cover.has-custom{background-size:cover;background-position:center}
+#cover.has-custom::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(40,25,20,.25),rgba(40,25,20,.45));
+}
+.cover-frame{
+  position:relative;z-index:2;
+  border:1px solid rgba(201,169,110,.65);
+  padding:10px;border-radius:4px;
+  max-width:520px;width:100%;
+}
+.cover-frame-inner{
+  border:1px solid rgba(201,169,110,.45);
+  padding:52px 26px;border-radius:2px;
+  background:rgba(253,251,245,.55);
+  backdrop-filter:blur(3px);
+}
+#cover.has-custom .cover-frame-inner{background:rgba(30,18,14,.28)}
+#cover.has-custom .cover-content{color:#FDF6EC;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.cover-top{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  letter-spacing:6px;font-size:13px;color:var(--gold-deep);margin-bottom:18px;
+}
+#cover.has-custom .cover-top{color:var(--gold-light)}
+.cover-title{
+  font-family:var(--hand);font-size:52px;line-height:1.3;
+  color:var(--rose-deep);margin-bottom:26px;
+}
+#cover.has-custom .cover-title{color:#FFE9D6}
+.cover-names{
+  font-size:26px;letter-spacing:4px;font-weight:600;margin-bottom:8px;
+}
+.cover-names .amp{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--gold);font-size:22px;margin:0 10px;
+}
+.cover-date{
+  font-family:'Cormorant Garamond',serif;letter-spacing:3px;
+  font-size:16px;color:var(--ink-light);margin-top:14px;
+}
+#cover.has-custom .cover-date{color:#F3E4D6}
+.cover-date strong{font-size:20px;color:var(--gold-deep);letter-spacing:2px}
+#cover.has-custom .cover-date strong{color:#E8D5B5}
+.cover-invite{
+  margin-top:26px;font-size:14px;letter-spacing:3px;color:var(--ink-light);
+}
+#cover.has-custom .cover-invite{color:#F3E4D6}
+.cover-lunar{
+  margin-top:6px;font-size:13px;letter-spacing:2px;color:var(--ink-light);
+}
+#cover.has-custom .cover-lunar{color:#F3E4D6}
+.cover-address{
+  margin-top:10px;font-size:13px;letter-spacing:1px;color:var(--ink-light);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.cover-address svg{width:14px;height:14px;stroke:var(--gold-deep);fill:none;stroke-width:1.5;flex:none}
+#cover.has-custom .cover-address{color:#F3E4D6}
+#cover.has-custom .cover-address svg{stroke:#E8D5B5}
+.cover-sign{
+  margin-top:14px;font-size:12px;letter-spacing:2px;color:var(--gold-deep);
+}
+#cover.has-custom .cover-sign{color:#E8D5B5}
+.scroll-hint{
+  position:absolute;bottom:calc(26px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--gold-deep);font-size:12px;letter-spacing:3px;
+}
+#cover.has-custom .scroll-hint{color:#E8D5B5}
+.scroll-hint .arrow{
+  width:14px;height:14px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg);animation:bounce 1.6s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(5px,5px)}}
+
+/* ---------- 2. 倒计时 ---------- */
+#countdown{background:linear-gradient(180deg,var(--ivory),#FBF3EC)}
+.countdown-sub{text-align:center;color:var(--ink-light);font-size:14px;letter-spacing:2px;margin-bottom:34px}
+.countdown-grid{
+  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+}
+.flip-card{
+  width:74px;
+  background:#fff;
+  border:1px solid var(--gold-light);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  padding:16px 0 12px;
+  text-align:center;
+  perspective:400px;
+}
+.flip-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:38px;font-weight:600;color:var(--gold-deep);
+  line-height:1.1;font-variant-numeric:tabular-nums;
+  transform-style:preserve-3d;
+}
+.flip-num.flipping{animation:flipIn .55s ease}
+@keyframes flipIn{
+  0%{transform:rotateX(88deg);opacity:.2}
+  60%{transform:rotateX(-12deg);opacity:1}
+  100%{transform:rotateX(0)}
+}
+.flip-label{font-size:12px;color:var(--ink-light);letter-spacing:3px;margin-top:6px}
+.countdown-passed{
+  display:none;text-align:center;
+  font-family:var(--hand);font-size:30px;color:var(--rose-deep);
+  padding:20px 0;
+}
+
+/* ---------- 3. 我们的故事 ---------- */
+.story-timeline{position:relative;padding:10px 0 20px}
+.story-timeline::before{
+  content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,var(--gold) 8%,var(--gold) 92%,transparent);
+}
+.story-item{
+  position:relative;padding:0 0 44px 56px;
+}
+.story-item:last-child{padding-bottom:0}
+.story-item::before{
+  content:'';position:absolute;left:13px;top:8px;
+  width:9px;height:9px;transform:rotate(45deg);
+  background:var(--ivory);border:2px solid var(--gold);
+}
+.story-item::after{
+  content:'';position:absolute;left:22px;top:14px;width:22px;height:1px;
+  background:var(--gold-light);
+}
+.story-card{
+  background:#fff;border:1px solid var(--gold-light);border-radius:14px;
+  padding:20px 22px;box-shadow:var(--shadow);
+}
+.story-date{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--gold-deep);font-size:14px;letter-spacing:2px;
+}
+.story-card h3{font-size:19px;margin:4px 0 8px;color:var(--rose-deep);letter-spacing:2px}
+.story-card p{font-size:14px;color:var(--ink-light)}
+@media(min-width:768px){
+  .story-timeline::before{left:50%}
+  .story-item{width:50%;padding:0 0 56px 0}
+  .story-item:nth-child(odd){padding-right:52px;text-align:right}
+  .story-item:nth-child(even){margin-left:50%;padding-left:52px}
+  .story-item:nth-child(odd)::before{left:auto;right:-7px}
+  .story-item:nth-child(even)::before{left:-7px}
+  .story-item:nth-child(odd)::after{left:auto;right:9px}
+  .story-item:nth-child(even)::after{left:9px}
+}
+
+/* ---------- 4. 相册 ---------- */
+#gallery{background:linear-gradient(180deg,#FBF3EC,var(--ivory))}
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+@media(min-width:640px){.gallery-grid{grid-template-columns:repeat(3,1fr)}}
+.gallery-item{
+  position:relative;border-radius:12px;overflow:hidden;aspect-ratio:3/4;
+  border:1px solid var(--gold-light);box-shadow:var(--shadow);
+  cursor:zoom-in;background:#fff;
+  transition:transform .3s ease;
+}
+.gallery-item:active{transform:scale(.97)}
+.gallery-item img{width:100%;height:100%;object-fit:cover}
+.gallery-upload{
+  aspect-ratio:3/4;border-radius:12px;
+  border:1.5px dashed var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  color:var(--gold-deep);font-size:13px;letter-spacing:2px;
+  background:rgba(255,255,255,.5);cursor:pointer;
+  transition:background .3s ease;
+}
+.gallery-upload:hover{background:rgba(232,213,181,.25)}
+.gallery-upload svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.5}
+
+/* 相册两栏：精选 + 分组 */
+.album-sub{font-size:15px;letter-spacing:3px;color:var(--ink);margin:10px 0 12px;display:flex;align-items:baseline;gap:8px}
+.album-sub .en-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:var(--gold);letter-spacing:2px}
+.featured-scroll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px}
+.featured-item{
+  flex:0 0 auto;width:150px;height:220px;border-radius:12px;overflow:hidden;
+  scroll-snap-align:start;border:1px solid var(--gold-light);box-shadow:var(--shadow);
+  position:relative;background:#fff;cursor:zoom-in;
+}
+.featured-item img{width:100%;height:100%;object-fit:cover}
+.album-hint{font-size:12px;color:var(--ink-light);letter-spacing:1px;margin-top:2px}
+.album-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px}
+.album-card{
+  flex:0 0 70%;max-width:320px;scroll-snap-align:start;border-radius:14px;overflow:hidden;
+  border:1px solid var(--gold-light);box-shadow:var(--shadow);background:#fff;cursor:pointer;
+}
+.album-card .cover{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.album-card .cover-empty{
+  width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#F3D9D4,#E8D5B5);color:#fff;font-size:28px;font-family:var(--hand);
+}
+.album-card .meta{padding:12px 16px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.album-card .meta h3{font-size:16px;letter-spacing:2px;color:var(--rose-deep)}
+.album-card .meta span{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold-deep);flex:none}
+.album-card.add{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  border:1.5px dashed var(--gold);color:var(--gold-deep);font-size:13px;letter-spacing:2px;
+  background:rgba(255,255,255,.5);min-height:180px;
+}
+.album-card.add svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.album-empty{text-align:center;padding:36px 0 16px;color:var(--ink-light);font-size:14px;letter-spacing:2px}
+.album-empty-hint{margin-top:8px;font-size:12px;color:var(--gold-deep)}
+.photo-fav{
+  position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;z-index:2;
+  background:rgba(253,251,245,.88);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(90,74,66,.18);
+}
+.photo-fav svg{width:16px;height:16px;stroke:var(--rose-deep);fill:none;stroke-width:1.8}
+.photo-fav.on svg{fill:var(--rose);stroke:var(--rose-deep)}
+/* 访客点赞按钮（卡片右下角） */
+.like-btn{
+  position:absolute;right:6px;bottom:6px;z-index:2;display:flex;align-items:center;gap:4px;
+  background:rgba(253,251,245,.9);border:1px solid var(--gold-light);border-radius:999px;
+  padding:4px 9px;font-size:12px;line-height:1;color:var(--ink-light);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;box-shadow:0 2px 8px rgba(90,74,66,.15);
+}
+.like-btn svg{width:13px;height:13px;stroke:var(--gold-deep);fill:none;stroke-width:1.7}
+.like-btn.on{color:var(--rose-deep);border-color:var(--rose)}
+.like-btn.on svg{fill:var(--rose);stroke:var(--rose-deep)}
+/* 人气榜名次角标 */
+.rank-badge{
+  position:absolute;left:6px;top:6px;z-index:2;min-width:26px;height:22px;padding:0 7px;
+  border-radius:999px;background:rgba(253,251,245,.92);border:1px solid var(--gold-light);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:600;color:var(--gold-deep);
+}
+.rank-badge.top{background:linear-gradient(135deg,#E8D5B5,#C9A96E);color:#fff;border-color:transparent}
+/* 灯箱点赞按钮 */
+.lightbox-like{
+  position:absolute;bottom:22px;right:18px;z-index:3;display:none;align-items:center;gap:6px;
+  background:rgba(253,251,245,.12);border:1px solid rgba(253,251,245,.5);border-radius:999px;
+  padding:8px 14px;color:#FDFBF5;font-size:14px;cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+}
+.lightbox-like.show{display:flex}
+.lightbox-like svg{width:16px;height:16px;stroke:#FDFBF5;fill:none;stroke-width:1.7}
+.lightbox-like.on svg{fill:var(--rose);stroke:var(--rose)}
+
+/* 分组详情页 */
+#groupPage{
+  position:fixed;inset:0;z-index:90;background:var(--ivory);
+  display:none;overflow-y:auto;overscroll-behavior:contain;
+}
+#groupPage.open{display:block}
+.group-rename{
+  flex:none;width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--gold);background:#fff;color:var(--gold-deep);
+  display:none;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .2s;
+}
+.group-rename:active{transform:scale(.92)}
+.group-rename svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.group-body{max-width:960px;margin:0 auto;padding:20px 20px 80px}
+#groupGrid.slide-l{animation:groupInL .3s ease-out}
+#groupGrid.slide-r{animation:groupInR .3s ease-out}
+@keyframes groupInL{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes groupInR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+.lightbox-cover{
+  position:absolute;bottom:calc(72px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  color:#E8D5B5;border:1px solid rgba(232,213,181,.5);border-radius:999px;
+  padding:8px 22px;font-size:13px;letter-spacing:2px;display:none;
+}
+.lightbox-cover.show{display:block}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(28,18,14,.94);
+  display:none;align-items:center;justify-content:center;
+  flex-direction:column;
+}
+.lightbox.open{display:flex}
+.lightbox img{
+  max-width:92vw;max-height:72vh;object-fit:contain;border-radius:8px;
+  box-shadow:0 10px 50px rgba(0,0,0,.5);
+  touch-action:pan-y;user-select:none;-webkit-user-drag:none;
+  will-change:transform;
+}
+.lightbox-count{color:#E8D5B5;font-family:'Cormorant Garamond',serif;letter-spacing:2px;margin-top:14px;font-size:14px}
+.lightbox-btn{
+  position:absolute;color:#E8D5B5;font-size:34px;line-height:1;
+  padding:16px;font-family:serif;opacity:.85;
+}
+.lightbox-btn.prev{left:6px;top:50%;transform:translateY(-50%)}
+.lightbox-btn.next{right:6px;top:50%;transform:translateY(-50%)}
+.lightbox-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;color:#E8D5B5;font-size:30px;padding:8px}
+.lightbox-del{
+  position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  color:#F0B4B0;border:1px solid rgba(240,180,176,.5);border-radius:999px;
+  padding:8px 22px;font-size:13px;letter-spacing:2px;display:none;
+}
+.lightbox-del.show{display:block}
+
+/* ---------- 5. 婚礼信息 ---------- */
+.address-box{
+  margin-top:24px;background:#fff;border:1px solid var(--gold-light);border-radius:16px;
+  padding:26px 22px;text-align:center;box-shadow:var(--shadow);
+}
+.address-box h3{letter-spacing:3px;color:var(--rose-deep);font-size:17px;margin-bottom:8px}
+.address-box p{font-size:15px;margin-bottom:20px}
+.nav-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* 信息板块内子区块（交通指引/当日流程） */
+.info-sub{margin-top:26px;text-align:left}
+.info-sub>h4{
+  letter-spacing:3px;color:var(--rose-deep);font-size:15px;margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.info-sub>h4::before{content:'';width:18px;flex:none;height:1px;background:var(--gold-light)}
+.info-sub>h4::after{content:'';flex:1;height:1px;background:var(--gold-light)}
+
+/* ---------- 6. 婚礼流程 ---------- */
+.schedule{position:relative;padding-left:30px;max-width:560px;margin:0 auto}
+.schedule::before{
+  content:'';position:absolute;left:8px;top:6px;bottom:6px;width:1px;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold),var(--gold-light));
+}
+.schedule-item{position:relative;padding:0 0 34px 22px}
+.schedule-item:last-child{padding-bottom:0}
+.schedule-item::before{
+  content:'';position:absolute;left:-26px;top:7px;width:9px;height:9px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 4px rgba(201,169,110,.18);
+}
+.schedule-time{
+  font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;
+  color:var(--gold-deep);letter-spacing:1px;
+}
+.schedule-item h3{font-size:16px;letter-spacing:2px;margin:2px 0 4px}
+.schedule-item p{font-size:13px;color:var(--ink-light)}
+
+/* ---------- 7. 出席回执 ---------- */
+#rsvp{background:linear-gradient(180deg,var(--ivory),#FBF3EC)}
+.rsvp-card{
+  max-width:520px;margin:0 auto;background:#fff;
+  border:1px solid var(--gold-light);border-radius:18px;
+  padding:32px 26px;box-shadow:var(--shadow);
+}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:14px;letter-spacing:2px;margin-bottom:8px;color:var(--ink)}
+.form-group label .req{color:var(--rose-deep)}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;padding:12px 14px;border:1px solid var(--gold-light);border-radius:10px;
+  background:var(--ivory);color:var(--ink);outline:none;
+  transition:border-color .3s ease,box-shadow .3s ease;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.15);
+}
+.form-group textarea{min-height:90px;resize:vertical}
+.form-error{font-size:12px;color:#C0584F;margin-top:5px;min-height:16px;display:block}
+.rsvp-success{display:none;text-align:center;padding:24px 6px}
+.rsvp-success .check{
+  width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
+  border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;
+}
+.rsvp-success .check svg{width:30px;height:30px;stroke:var(--gold-deep);fill:none;stroke-width:2}
+.rsvp-success h3{font-family:var(--hand);font-size:28px;color:var(--rose-deep);font-weight:400;margin-bottom:8px}
+.rsvp-success p{color:var(--ink-light);font-size:14px}
+
+/* ---------- 8. 交通指引（标题 chip + 点击浮层） ---------- */
+.transport-chips{display:flex;flex-wrap:wrap;gap:10px}
+.transport-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--gold);border-radius:999px;
+  padding:10px 18px;box-shadow:0 4px 14px rgba(90,74,66,.08);
+  color:var(--rose-deep);font-size:14px;letter-spacing:2px;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.transport-chip:active{transform:scale(.96)}
+.transport-chip svg{width:18px;height:18px;stroke:var(--gold-deep);fill:none;stroke-width:1.5;flex:none}
+.transport-detail p,.transport-detail li{font-size:14px;color:var(--ink-light);line-height:1.9}
+.transport-detail ul{list-style:none}
+.transport-detail li{padding-left:14px;position:relative;margin-top:4px}
+.transport-detail li::before{content:'·';position:absolute;left:2px;color:var(--gold)}
+
+/* ---------- 9. 祝福墙 ---------- */
+#wishes{background:linear-gradient(180deg,#FBF3EC,var(--ivory))}
+.wish-form{
+  max-width:520px;margin:0 auto 30px;background:#fff;
+  border:1px solid var(--gold-light);border-radius:18px;
+  padding:26px 22px;box-shadow:var(--shadow);
+}
+.wish-list{max-width:640px;margin:0 auto;column-count:1;column-gap:14px}
+@media(min-width:640px){.wish-list{column-count:2}}
+.wish-card{
+  break-inside:avoid;margin-bottom:14px;
+  background:#fff;border:1px solid var(--gold-light);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--shadow);
+}
+.wish-card .w-name{
+  font-family:var(--hand);font-size:19px;color:var(--rose-deep);
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.wish-card .w-time{font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--gold);font-style:italic}
+.wish-card p{font-size:14px;color:var(--ink);margin-top:6px}
+.wish-card.fresh{animation:wishIn .7s ease}
+@keyframes wishIn{0%{opacity:0;transform:translateY(-14px) scale(.96)}100%{opacity:1;transform:none}}
+
+/* ---------- 10. 结束页 ---------- */
+#ending{
+  max-width:none;text-align:center;
+  background:
+    radial-gradient(ellipse at 80% 10%,rgba(240,220,218,.8),transparent 55%),
+    radial-gradient(ellipse at 15% 85%,rgba(232,213,181,.8),transparent 55%),
+    linear-gradient(160deg,#FBF3EC,#F5E6DC);
+  padding:110px 24px 90px;
+}
+.ending-title{font-family:var(--hand);font-size:44px;color:var(--rose-deep);margin-bottom:22px}
+.ending-names{font-size:20px;letter-spacing:4px;margin-bottom:6px}
+.ending-names .amp{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);margin:0 8px}
+.ending-info{font-size:14px;color:var(--ink-light);letter-spacing:2px;margin-bottom:36px}
+.ending-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- 分享引导遮罩 ---------- */
+.share-mask{
+  position:fixed;inset:0;z-index:120;background:rgba(28,18,14,.86);
+  display:none;backdrop-filter:blur(3px);
+}
+.share-mask.open{display:block}
+.share-mask .arrow{
+  position:absolute;top:calc(8px + env(safe-area-inset-top));right:24px;
+  width:70px;height:90px;stroke:#E8D5B5;fill:none;stroke-width:2;
+}
+.share-mask .tip{
+  position:absolute;top:calc(108px + env(safe-area-inset-top));right:30px;
+  color:#FDF6EC;font-size:16px;letter-spacing:2px;text-align:right;line-height:2;
+}
+.share-mask .tip strong{color:var(--gold-light)}
+.share-mask .close-hint{
+  position:absolute;bottom:calc(40px + env(safe-area-inset-bottom));left:0;right:0;
+  text-align:center;color:rgba(253,246,236,.6);font-size:13px;letter-spacing:3px;
+}
+.share-mask .copy-btn{
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(90px + env(safe-area-inset-bottom));
+  padding:12px 32px;border-radius:999px;
+  border:1px solid var(--gold-light);color:var(--gold-light);
+  font-size:14px;letter-spacing:2px;
+  transition:transform .1s ease-out;
+}
+.share-mask .copy-btn:active{transform:translateX(-50%) scale(.96)}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:rgba(40,28,22,.92);color:#FDF6EC;
+  padding:11px 24px;border-radius:999px;font-size:14px;letter-spacing:1px;
+  opacity:0;pointer-events:none;transition:all .35s ease;z-index:130;
+  max-width:86vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- 主人态 & 弹窗 ---------- */
+#hostTools{
+  position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;
+  display:none;gap:8px;
+}
+.host-tool-btn{
+  font-size:12px;letter-spacing:2px;color:var(--gold-deep);
+  border:1px solid var(--gold);border-radius:999px;padding:8px 16px;
+  background:rgba(253,251,245,.85);backdrop-filter:blur(6px);
+  box-shadow:0 4px 14px rgba(90,74,66,.12);
+}
+.modal{
+  position:fixed;inset:0;z-index:110;
+  background:rgba(28,18,14,.55);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.modal.open{display:flex}
+.modal-card{
+  position:relative;width:100%;max-width:440px;max-height:80vh;overflow-y:auto;
+  background:var(--ivory);border:1px solid var(--gold-light);border-radius:18px;
+  box-shadow:0 18px 60px rgba(40,25,20,.28);padding:28px 24px;
+}
+.modal-card h3{
+  font-family:var(--hand);font-size:26px;font-weight:400;
+  color:var(--rose-deep);text-align:center;margin-bottom:18px;
+}
+.modal-close{
+  position:absolute;top:8px;right:12px;padding:8px;
+  font-size:26px;line-height:1;color:var(--ink-light);
+}
+.wish-card{position:relative}
+.wish-del{
+  position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
+  color:var(--rose-deep);border:1px solid rgba(178,110,108,.45);
+  background:rgba(240,220,218,.4);font-size:14px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.rsvp-item{
+  position:relative;background:#fff;border:1px solid var(--gold-light);
+  border-radius:12px;padding:14px 16px;margin-bottom:12px;
+}
+.rsvp-item .r-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:15px}
+.rsvp-item .r-meta{font-size:13px;color:var(--ink-light);margin-top:2px}
+.rsvp-item .r-wish{font-size:13px;color:var(--ink);margin-top:8px}
+.rsvp-item .r-del{
+  flex:none;font-size:12px;letter-spacing:1px;color:var(--rose-deep);
+  border:1px solid rgba(178,110,108,.45);border-radius:999px;padding:4px 12px;
+}
+.rsvp-empty{text-align:center;color:var(--ink-light);font-size:14px;padding:22px 0}
+
+/* ---------- 主人编辑页 ---------- */
+#editorPage{
+  position:fixed;inset:0;z-index:125;background:var(--ivory);
+  display:none;overflow-y:auto;overscroll-behavior:contain;
+}
+#editorPage.open{display:block}
+.editor-bar{
+  position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
+  background:rgba(253,251,245,.95);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--gold-light);
+}
+.editor-bar h3{font-family:var(--hand);font-size:24px;font-weight:400;color:var(--rose-deep)}
+.editor-bar .bar-btns{display:flex;gap:8px;flex:none}
+.editor-body{max-width:640px;margin:0 auto;padding:24px 20px 80px}
+.editor-group{
+  background:#fff;border:1px solid var(--gold-light);border-radius:16px;
+  padding:22px 18px;margin-bottom:20px;box-shadow:var(--shadow);
+}
+.editor-group h4{font-size:16px;letter-spacing:2px;color:var(--gold-deep);margin-bottom:16px;font-weight:600}
+.editor-row{
+  border:1px dashed var(--gold-light);border-radius:12px;
+  padding:14px 14px 4px;margin-bottom:14px;position:relative;
+}
+.editor-row .form-group{margin-bottom:12px}
+.editor-row-del{
+  position:absolute;top:10px;right:10px;font-size:12px;letter-spacing:1px;
+  color:var(--rose-deep);border:1px solid rgba(178,110,108,.45);border-radius:999px;
+  padding:3px 12px;background:rgba(240,220,218,.3);
+}
+.editor-add{width:100%}
+
+/* ---------- Apple 设计规范适配：触控目标 / 按压反馈 / 可访问性 ---------- */
+/* 触控目标 ≥44pt（HIG） */
+.icon-btn{width:44px;height:44px}
+/* 圆点导航扩大隐形热区（视觉 9px，触控 ~27px） */
+.dot-nav button::before{
+  content:'';position:absolute;inset:-9px;border-radius:50%;
+}
+/* 按压即时反馈：pointer-down 瞬间缩放，100ms ease-out */
+.btn{transition:background .3s ease,color .3s ease,box-shadow .3s ease,transform .1s ease-out}
+.btn:active{transform:scale(.97)}
+.gallery-upload:active{transform:scale(.97)}
+.dot-nav button:active{transform:scale(1.5)}
+/* 减少动态效果：动画降级为静态/渐隐，花瓣关闭 */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .flip-num.flipping{animation:none}
+  .scroll-hint .arrow{animation:none}
+  .wish-card.fresh{animation:none}
+  .icon-btn.playing svg .wave{animation:none}
+  .dot-nav button::after{transition:none}
+  #groupGrid.slide-l,#groupGrid.slide-r{animation:none}
+  #petalCanvas{display:none}
+}
+/* 减少透明度：半透明玻璃材质降级为实色 */
+@media (prefers-reduced-transparency: reduce){
+  .icon-btn,.cover-frame-inner{backdrop-filter:none;background:rgba(253,251,245,.96)}
+  .btn{backdrop-filter:none;background:rgba(255,255,255,.92)}
+}
+
+.hidden-input{display:none}
+</style>
+</head>
+<body>
+<canvas id="petalCanvas"></canvas>
+
+<!-- 右上角悬浮按钮：音乐 / 上传封面 / 恢复默认封面 -->
+<div class="float-actions">
+  <button class="icon-btn" id="musicBtn" aria-label="播放/暂停音乐">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 18V6l10-2v11"/>
+      <circle cx="7" cy="18" r="2.4"/>
+      <circle cx="17" cy="15" r="2.4"/>
+      <path class="wave" d="M21 4v3" style="transition:opacity .3s"/>
+      <path class="slash" d="M3.5 3.5l17 17"/>
+    </svg>
+  </button>
+  <button class="icon-btn" id="coverUploadBtn" aria-label="上传自定义封面">
+    <svg viewBox="0 0 24 24">
+      <path d="M4 8h2l1.5-2.5h9L18 8h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+      <circle cx="12" cy="14" r="3.6"/>
+    </svg>
+  </button>
+  <button class="icon-btn" id="restoreCoverBtn" aria-label="恢复默认封面">
+    <svg viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 3-6.7"/>
+      <path d="M3 4v5h5"/>
+    </svg>
+  </button>
+  <button class="icon-btn" id="hostBtn" aria-label="主人登录" style="display:none">
+    <svg viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="9" rx="2"/>
+      <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+    </svg>
+  </button>
+</div>
+<input type="file" id="coverFileInput" class="hidden-input" accept="image/*">
+
+<!-- 右侧圆点导航 -->
+<nav class="dot-nav" id="dotNav" aria-label="板块导航"></nav>
+
+<!-- 1. 封面首屏 -->
+<section class="section" id="cover" data-label="封面">
+  <div class="cover-frame reveal visible">
+    <div class="cover-frame-inner cover-content">
+      <p class="cover-top">WEDDING &nbsp;INVITATION</p>
+      <h1 class="cover-title">我们结婚啦</h1>
+      <p class="cover-names" id="coverNames">张明<span class="amp">&amp;</span>李悦</p>
+      <p class="cover-date"><strong id="coverDateText">2027.02.08</strong> &nbsp;<span id="coverDateLabel">周一 · 上午11点</span></p>
+      <p class="cover-lunar" id="coverLunar">农历丁未年 正月初三</p>
+      <p class="cover-address" id="coverAddress">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span id="coverAddressText">xx省xx市xx区xx路xx号（xx酒店x楼宴会厅）</span>
+      </p>
+      <p class="cover-invite">诚挚邀请您见证我们的幸福时刻</p>
+      <p class="cover-sign" id="coverSign">张明 & 李悦 敬邀</p>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>下滑开启邀请函</span>
+    <span class="arrow"></span>
+  </div>
+</section>
+
+<!-- 2. 爱情倒计时 -->
+<section class="section" id="countdown" data-label="倒计时">
+  <div class="section-title reveal">
+    <span class="en">Countdown</span>
+    <h2>爱情倒计时</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <p class="countdown-sub reveal">距离我们的婚礼还有</p>
+  <div class="countdown-grid reveal d1" id="countdownGrid">
+    <div class="flip-card"><div class="flip-num" id="cdDays">0</div><div class="flip-label">天</div></div>
+    <div class="flip-card"><div class="flip-num" id="cdHours">0</div><div class="flip-label">时</div></div>
+    <div class="flip-card"><div class="flip-num" id="cdMins">0</div><div class="flip-label">分</div></div>
+    <div class="flip-card"><div class="flip-num" id="cdSecs">0</div><div class="flip-label">秒</div></div>
+  </div>
+  <p class="countdown-passed" id="countdownPassed">婚礼已圆满举行，感谢有您见证 ♡</p>
+</section>
+
+<!-- 3. 我们的故事 -->
+<section class="section" id="story" data-label="故事">
+  <div class="section-title reveal">
+    <span class="en">Our Story</span>
+    <h2>我们的故事</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <div class="story-timeline" id="storyTimeline"></div>
+</section>
+
+<!-- 4. 婚纱相册 -->
+<section class="section" id="gallery" data-label="相册">
+  <div class="section-title reveal">
+    <span class="en">Gallery</span>
+    <h2>婚纱相册</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <div id="albumRoot">
+    <!-- 第一栏：精选照片 -->
+    <div id="featuredWrap" style="display:none">
+      <p class="album-sub">精选 · <span class="en-sub">Featured</span></p>
+      <div class="featured-scroll" id="featuredScroll"></div>
+      <p class="album-hint" id="featuredHint" style="display:none">点击照片右上角爱心即可加入精选</p>
+    </div>
+    <!-- 人气榜 -->
+    <div id="rankWrap" style="display:none">
+      <p class="album-sub">人气榜 · <span class="en-sub">Most Loved</span></p>
+      <div class="featured-scroll" id="rankScroll"></div>
+    </div>
+    <!-- 第二栏：相册分组 -->
+    <div id="albumsWrap" style="display:none">
+      <p class="album-sub">相册 · <span class="en-sub">Albums</span></p>
+      <div class="album-scroll" id="albumScroll"></div>
+    </div>
+    <!-- 本地回退模式：单网格 -->
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <!-- 空态 -->
+    <div class="album-empty" id="albumEmpty" style="display:none">
+      <div class="title-lines" style="margin:0 auto 16px"><span class="dot"></span></div>
+      <p>照片整理中，敬请期待</p>
+      <p class="album-empty-hint" id="albumEmptyHint" style="display:none">还没有照片，点击下方按钮上传第一批照片</p>
+      <button class="btn small" id="emptyUploadBtn" style="display:none;margin-top:14px">上传照片</button>
+    </div>
+  </div>
+  <input type="file" id="photoFileInput" class="hidden-input" accept="image/*" multiple>
+</section>
+
+<!-- 5. 婚礼信息 -->
+<section class="section" id="info" data-label="信息">
+  <div class="section-title reveal">
+    <span class="en">Information</span>
+    <h2>婚礼信息</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <div class="info-sub reveal">
+    <h4>当日流程</h4>
+    <div class="schedule" id="scheduleList"></div>
+  </div>
+  <div class="address-box reveal">
+    <h3>婚礼地点</h3>
+    <p id="addressText">xx省xx市xx区xx路xx号（xx酒店x楼宴会厅）</p>
+    <div class="nav-btns">
+      <button class="btn small" data-nav="amap">高德地图</button>
+      <button class="btn small" data-nav="baidu">百度地图</button>
+      <button class="btn small" data-nav="apple">系统地图</button>
+    </div>
+  </div>
+  <div class="info-sub reveal">
+    <h4>交通指引</h4>
+    <div class="transport-chips" id="transportGrid"></div>
+  </div>
+</section>
+
+<!-- 交通指引详情浮层 -->
+<div class="modal" id="transportModal">
+  <div class="modal-card">
+    <button class="modal-close" id="transportModalClose" aria-label="关闭">×</button>
+    <h3 id="transportModalTitle"></h3>
+    <div class="transport-detail" id="transportModalBody"></div>
+  </div>
+</div>
+
+<!-- 6. 出席回执 -->
+<section class="section" id="rsvp" data-label="回执">
+  <div class="section-title reveal">
+    <span class="en">RSVP</span>
+    <h2>出席回执</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <div class="rsvp-card reveal">
+    <form id="rsvpForm" novalidate>
+      <div class="form-group">
+        <label>姓名 <span class="req">*</span></label>
+        <input type="text" id="rsvpName" placeholder="请输入您的姓名" maxlength="20">
+        <span class="form-error" data-for="rsvpName"></span>
+      </div>
+      <div class="form-group">
+        <label>出席人数 <span class="req">*</span></label>
+        <select id="rsvpCount">
+          <option value="">请选择出席人数</option>
+          <option value="1">1 人</option>
+          <option value="2">2 人</option>
+          <option value="3">3 人</option>
+          <option value="4">4 人</option>
+          <option value="5">5 人及以上</option>
+          <option value="0">无法出席，遥祝新人</option>
+        </select>
+        <span class="form-error" data-for="rsvpCount"></span>
+      </div>
+      <div class="form-group">
+        <label>联系电话 <span class="req">*</span></label>
+        <input type="tel" id="rsvpPhone" placeholder="请输入 11 位手机号" maxlength="11" inputmode="numeric">
+        <span class="form-error" data-for="rsvpPhone"></span>
+      </div>
+      <div class="form-group">
+        <label>祝福语</label>
+        <textarea id="rsvpWish" placeholder="写下您对新人的祝福（将同步到祝福墙）" maxlength="200"></textarea>
+        <span class="form-error" data-for="rsvpWish"></span>
+      </div>
+      <button type="submit" class="btn" style="width:100%">提交回执</button>
+    </form>
+    <div class="rsvp-success" id="rsvpSuccess">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+      <h3>提交成功</h3>
+      <p id="rsvpSuccessText">感谢您的回执，期待与您相见！</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:18px">
+    <button class="btn small" id="rsvpAdminBtn" style="display:none">查看回执</button>
+  </div>
+</section>
+
+<!-- 7. 祝福墙 -->
+<section class="section" id="wishes" data-label="祝福">
+  <div class="section-title reveal">
+    <span class="en">Wishes</span>
+    <h2>祝福墙</h2>
+  </div>
+  <div class="title-lines reveal"><span class="dot"></span></div>
+  <div class="wish-form reveal">
+    <div class="form-group">
+      <label>您的名字</label>
+      <input type="text" id="wishName" placeholder="怎么称呼您" maxlength="20">
+      <span class="form-error" data-for="wishName"></span>
+    </div>
+    <div class="form-group">
+      <label>祝福留言</label>
+      <textarea id="wishText" placeholder="写下对新人的祝福…" maxlength="200"></textarea>
+      <span class="form-error" data-for="wishText"></span>
+    </div>
+    <button class="btn" id="wishSubmit" style="width:100%">送出祝福</button>
+  </div>
+  <div class="wish-list" id="wishList"></div>
+</section>
+
+<!-- 10. 结束页 -->
+<section class="section" id="ending" data-label="致谢">
+  <h2 class="ending-title reveal">期待您的到来</h2>
+  <p class="ending-names reveal d1" id="endingNames">张明<span class="amp">&amp;</span>李悦</p>
+  <p class="ending-info reveal d2" id="endingInfo">2027年2月8日 周一 上午11点<br>xx省xx市xx区xx路xx号（xx酒店x楼宴会厅）</p>
+  <div class="ending-btns reveal d3">
+    <button class="btn" id="shareBtn">分享给好友</button>
+    <button class="btn" id="backTopBtn">回到顶部</button>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose" aria-label="关闭">×</button>
+  <button class="lightbox-btn prev" id="lbPrev" aria-label="上一张">‹</button>
+  <img id="lbImg" alt="相册照片">
+  <button class="lightbox-btn next" id="lbNext" aria-label="下一张">›</button>
+  <p class="lightbox-count" id="lbCount"></p>
+  <button class="lightbox-like" id="lbLike" aria-label="点赞"></button>
+  <button class="lightbox-del" id="lbDel">删除这张照片</button>
+  <button class="lightbox-cover" id="lbCoverBtn">设为分组封面</button>
+</div>
+
+<!-- 分享引导遮罩 -->
+<div class="share-mask" id="shareMask">
+  <svg class="arrow" viewBox="0 0 70 90">
+    <path d="M10 85 C 15 50, 40 40, 55 12" stroke-dasharray="5 5"/>
+    <path d="M46 16 L 56 8 L 58 20" />
+  </svg>
+  <p class="tip" id="shareTip">点击右上角 <strong>···</strong><br>选择「发送给朋友」<br>或「分享到朋友圈」</p>
+  <button class="copy-btn" id="copyLinkBtn">复制邀请链接</button>
+  <p class="close-hint">点击空白处关闭</p>
+</div>
+
+<!-- 主人登录弹窗 -->
+<div class="modal" id="hostModal">
+  <div class="modal-card">
+    <button class="modal-close" id="hostModalClose" aria-label="关闭">×</button>
+    <h3>主人登录</h3>
+    <div class="form-group">
+      <label>邮箱</label>
+      <input type="email" id="hostEmail" placeholder="主人账号邮箱" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>密码</label>
+      <input type="password" id="hostPass" placeholder="密码" autocomplete="current-password">
+    </div>
+    <span class="form-error" id="hostError"></span>
+    <button class="btn" id="hostLoginBtn" style="width:100%">登录</button>
+  </div>
+</div>
+
+<!-- 回执管理弹窗（仅主人可见入口） -->
+<div class="modal" id="rsvpModal">
+  <div class="modal-card">
+    <button class="modal-close" id="rsvpModalClose" aria-label="关闭">×</button>
+    <h3>出席回执</h3>
+    <div id="rsvpList"></div>
+  </div>
+</div>
+
+<div id="hostTools">
+  <button class="host-tool-btn" id="hostEditBtn">编辑信息</button>
+  <button class="host-tool-btn" id="hostBadge">主人模式 · 退出</button>
+</div>
+
+<!-- 主人编辑页（全屏，仅主人可见入口） -->
+<div id="editorPage">
+  <div class="editor-bar">
+    <h3>编辑婚礼信息</h3>
+    <div class="bar-btns">
+      <button class="btn small" id="editorCancel">取消</button>
+      <button class="btn small" id="editorSave">保存</button>
+    </div>
+  </div>
+  <div class="editor-body" id="editorBody"></div>
+</div>
+
+<!-- 分组详情页（全屏覆盖层） -->
+<div id="groupPage">
+  <div class="editor-bar">
+    <button class="btn small" id="groupBack">‹ 返回</button>
+    <h3 id="groupTitle">我们的照片</h3>
+    <span style="width:64px;display:flex;justify-content:flex-end">
+      <button class="group-rename" id="groupRename" aria-label="重命名分组">
+        <svg viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+      </button>
+    </span>
+  </div>
+  <div class="group-body">
+    <div class="gallery-grid" id="groupGrid"></div>
+  </div>
+</div>
+
+<!-- 新建分组弹窗 -->
+<div class="modal" id="groupModal">
+  <div class="modal-card">
+    <button class="modal-close" id="groupModalClose" aria-label="关闭">×</button>
+    <h3 id="groupModalTitle">新建分组</h3>
+    <div class="form-group">
+      <label>分组名称</label>
+      <input type="text" id="groupNameInput" placeholder="如：迎宾照" maxlength="20">
+    </div>
+    <button class="btn" id="groupCreateBtn" style="width:100%">创建</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* ================= 配置 ================= */
+var CONFIG = {
+  groom: '张明',
+  bride: '李悦',
+  // 婚礼时间（倒计时用；封面日期文案在 DEFAULT_CONFIG 里，也可在主人态编辑页修改）
+  weddingTime: new Date('2027-02-08T11:00:00+08:00').getTime(),
+  address: 'xx省xx市xx区xx路xx号（xx酒店x楼宴会厅）',
+  // 一键导航：高德分享链接（高德地图App内分享地点可获得，精确定位）及坐标：GCJ-02(高德/苹果) / BD-09(百度)
+  amapShare: 'https://surl.amap.com/xxxxxx',
+  gcj: { lat: 29.56301, lng: 106.55156 },
+  bd: { lat: 29.56930, lng: 106.55800 },
+  // 如想使用真实音乐文件，填入 URL 即可（留空则使用内置的合成钢琴旋律）
+  musicUrl: '',
+  // Supabase 配置：填入项目 URL 和 publishable anon key 后启用云端同步（anon key 配合 RLS 可安全公开）
+  // 留空则为纯本地模式：无需后端即可体验，照片/祝福仅保存在访客浏览器
+  supabaseUrl: '',
+  supabaseAnonKey: ''
+};
+var LS = { photos: 'wedding_photos', cover: 'wedding_cover', music: 'wedding_music',
+           rsvp: 'wedding_rsvp', wishes: 'wedding_wishes' };
+
+/* ================= 工具 ================= */
+function $(s){ return document.querySelector(s); }
+function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+var toastTimer = null;
+function toast(msg){
+  var t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+}
+function lsGet(key, fallback){
+  try { var v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); }
+  catch(e){ return fallback; }
+}
+function lsSet(key, val){
+  try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+  catch(e){ toast('存储空间不足，请先删除部分照片'); return false; }
+}
+/* 图片压缩：限制最长边，转 JPEG dataURL */
+function compressImage(file, maxEdge, quality){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var w = img.width, h = img.height;
+        var scale = Math.min(1, maxEdge / Math.max(w, h));
+        var cw = Math.round(w * scale), ch = Math.round(h * scale);
+        var canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, cw, ch);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ================= 数据层 & 主人态 ================= */
+var sb = null;
+if (CONFIG.supabaseUrl && CONFIG.supabaseAnonKey && window.supabase) {
+  try { sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey); } catch(e){ sb = null; }
+}
+var isHost = false;
+function hostVisible(){ return !sb || isHost; } // 未配置 Supabase 时保持现状（人人可本地上传）
+/* dataURL 转 Blob（用于上传 Storage） */
+function dataUrlToBlob(dataUrl){
+  var parts = dataUrl.split(',');
+  var m = parts[0].match(/:(.*?);/);
+  var bin = atob(parts[1]);
+  var arr = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: m ? m[1] : 'image/jpeg' });
+}
+/* Storage 公开 URL，加 ?t= 防缓存 */
+function photoUrl(path, t){
+  return CONFIG.supabaseUrl + '/storage/v1/object/public/photos/' + path + (t ? '?t=' + t : '');
+}
+/* 派生尺寸 URL：thumbs/(800px 网格/封面用) 与 medium/(2048px 灯箱用)，按文件名约定派生 */
+function photoUrlSized(path, size, t){
+  return photoUrl(size + '/' + path.split('/').pop(), t);
+}
+/* 图片加载失败时回退到原图（老数据可能没有派生尺寸） */
+function imgWithFallback(img, src, fallback){
+  img.onerror = function(){
+    img.onerror = null;
+    if (fallback && img.src !== fallback) img.src = fallback;
+  };
+  img.src = src;
+}
+var hostHooks = []; // 主人态变化时需要重渲染的模块钩子
+function onHostChange(fn){ hostHooks.push(fn); }
+function updateHostUI(){
+  var hostBtn = $('#hostBtn'), tools = $('#hostTools');
+  var upBtn = $('#coverUploadBtn'), resBtn = $('#restoreCoverBtn'), adminBtn = $('#rsvpAdminBtn');
+  if (hostBtn) hostBtn.style.display = sb ? 'flex' : 'none';
+  if (tools) tools.style.display = (sb && isHost) ? 'flex' : 'none';
+  if (upBtn) upBtn.style.display = hostVisible() ? 'flex' : 'none';
+  if (resBtn) resBtn.style.display = (hostVisible() && $('#cover').classList.contains('has-custom')) ? 'flex' : 'none';
+  if (adminBtn) adminBtn.style.display = (sb && isHost) ? 'inline-flex' : 'none';
+  for (var i = 0; i < hostHooks.length; i++){ try { hostHooks[i](); } catch(e){} }
+}
+(function(){
+  updateHostUI();
+  if (!sb) return; // 未配置 Supabase：一切维持本地模式
+  sb.auth.getSession().then(function(res){
+    isHost = !!(res && res.data && res.data.session);
+    updateHostUI();
+  }).catch(function(){});
+  sb.auth.onAuthStateChange(function(event, session){
+    isHost = !!session;
+    updateHostUI();
+  });
+  var modal = $('#hostModal');
+  function closeModal(){
+    modal.classList.remove('open');
+    $('#hostError').textContent = '';
+    $('#hostPass').value = '';
+  }
+  $('#hostBtn').addEventListener('click', function(){
+    if (isHost){ toast('已处于主人模式'); return; }
+    modal.classList.add('open');
+    setTimeout(function(){ $('#hostEmail').focus(); }, 60);
+  });
+  $('#hostModalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+  function login(){
+    var email = $('#hostEmail').value.trim();
+    var pass = $('#hostPass').value;
+    if (!email || !pass){ $('#hostError').textContent = '请输入邮箱和密码'; return; }
+    $('#hostError').textContent = '';
+    $('#hostLoginBtn').disabled = true;
+    sb.auth.signInWithPassword({ email: email, password: pass }).then(function(res){
+      $('#hostLoginBtn').disabled = false;
+      if (res.error){ $('#hostError').textContent = '登录失败：邮箱或密码不正确'; return; }
+      closeModal();
+      toast('主人模式已开启');
+    }).catch(function(){
+      $('#hostLoginBtn').disabled = false;
+      $('#hostError').textContent = '网络异常，请稍后再试';
+    });
+  }
+  $('#hostLoginBtn').addEventListener('click', login);
+  $('#hostPass').addEventListener('keydown', function(e){ if (e.key === 'Enter') login(); });
+  $('#hostBadge').addEventListener('click', function(){
+    sb.auth.signOut().then(function(){
+      toast('已退出主人模式');
+    }).catch(function(){
+      toast('已退出主人模式');
+    });
+  });
+})();
+
+/* ================= 花瓣飘落 ================= */
+(function(){
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var canvas = $('#petalCanvas'), ctx = canvas.getContext('2d');
+  var petals = [], W, H, COUNT = 26;
+  var COLORS = ['rgba(216,167,160,', 'rgba(232,213,181,', 'rgba(240,220,218,', 'rgba(201,169,110,'];
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  function makePetals(){
+    petals = [];
+    for (var i = 0; i < COUNT; i++){
+      petals.push({
+        x: Math.random() * W,
+        y: Math.random() * 2 * H - H,
+        r: 5 + Math.random() * 7,
+        vy: .5 + Math.random() * 1.1,
+        vx: .3 + Math.random() * .8,
+        phase: Math.random() * Math.PI * 2,
+        spin: .01 + Math.random() * .02,
+        angle: Math.random() * Math.PI * 2,
+        alpha: .35 + Math.random() * .4,
+        color: COLORS[i % COLORS.length]
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < petals.length; i++){
+      var p = petals[i];
+      p.y += p.vy;
+      p.x += Math.sin(p.phase) * p.vx * .6;
+      p.phase += .015;
+      p.angle += p.spin;
+      if (p.y > H + 20){ p.y = -20; p.x = Math.random() * W; }
+      if (p.x > W + 20) p.x = -20;
+      if (p.x < -20) p.x = W + 20;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.beginPath();
+      // 花瓣形：两个贝塞尔弧
+      ctx.moveTo(0, -p.r);
+      ctx.bezierCurveTo(p.r, -p.r, p.r, p.r * .6, 0, p.r);
+      ctx.bezierCurveTo(-p.r, p.r * .6, -p.r, -p.r, 0, -p.r);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+    requestAnimationFrame(draw);
+  }
+  resize(); makePetals(); draw();
+  addEventListener('resize', function(){ resize(); makePetals(); });
+})();
+
+/* ================= 背景音乐（WebAudio 合成钢琴旋律 / 可换真实音频） ================= */
+var music = (function(){
+  var playing = false, audioEl = null, ctx = null, loopTimer = null, master = null;
+  // 卡农式和弦进行 (D 大调)：D A Bm F#m G D G A
+  var CHORDS = [
+    [293.66, 369.99, 440.00], [220.00, 277.18, 329.63],
+    [246.94, 293.66, 369.99], [185.00, 220.00, 277.18],
+    [196.00, 246.94, 293.66], [293.66, 369.99, 440.00],
+    [196.00, 246.94, 293.66], [220.00, 277.18, 329.63]
+  ];
+  var CHORD_LEN = 2200; // 每和弦毫秒
+  function note(freq, at, dur, vol){
+    var osc = ctx.createOscillator(), g = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0, at);
+    g.gain.linearRampToValueAtTime(vol, at + .06);
+    g.gain.exponentialRampToValueAtTime(.0001, at + dur);
+    osc.connect(g); g.connect(master);
+    osc.start(at); osc.stop(at + dur + .05);
+  }
+  function scheduleLoop(){
+    if (!playing || CONFIG.musicUrl) return;
+    var t0 = ctx.currentTime + .1;
+    for (var c = 0; c < CHORDS.length; c++){
+      var chord = CHORDS[c], base = t0 + c * (CHORD_LEN / 1000);
+      // 分解和弦琶音
+      for (var n = 0; n < 4; n++){
+        note(chord[n % chord.length] * (n === 3 ? 2 : 1), base + n * .5, 1.6, .5);
+      }
+      note(chord[0] / 2, base, 2.0, .35); // 低音
+    }
+    loopTimer = setTimeout(scheduleLoop, CHORD_LEN * CHORDS.length - 150);
+  }
+  function startSynth(){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false; // 环境不支持 WebAudio，优雅降级
+    if (!ctx){
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = .14;
+      master.connect(ctx.destination);
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    scheduleLoop();
+    return true;
+  }
+  function stopSynth(){ clearTimeout(loopTimer); }
+  function play(){
+    playing = true;
+    if (CONFIG.musicUrl){
+      if (!audioEl){ audioEl = new Audio(CONFIG.musicUrl); audioEl.loop = true; }
+      audioEl.play().catch(function(){});
+    } else if (!startSynth()){
+      playing = false;
+      return false;
+    }
+    $('#musicBtn').classList.add('playing');
+    lsSet(LS.music, true);
+    return true;
+  }
+  function pause(){
+    playing = false;
+    if (audioEl) audioEl.pause();
+    stopSynth();
+    $('#musicBtn').classList.remove('playing');
+    lsSet(LS.music, false);
+  }
+  function toggle(){ return playing ? (pause(), true) : play(); }
+  // 记住上次播放状态；浏览器自动播放限制下，首次交互时恢复
+  var wantPlay = lsGet(LS.music, false);
+  if (wantPlay){
+    var once = function(){ play(); document.removeEventListener('touchstart', once); document.removeEventListener('click', once); };
+    document.addEventListener('touchstart', once, { passive: true });
+    document.addEventListener('click', once);
+  }
+  return { toggle: toggle, isPlaying: function(){ return playing; } };
+})();
+$('#musicBtn').addEventListener('click', function(){
+  var ok = music.toggle();
+  if (ok === false){ toast('当前环境暂不支持音频播放'); return; }
+  toast(music.isPlaying() ? '音乐已开启 ♪' : '音乐已暂停');
+});
+
+/* ================= 倒计时（3D 翻转） ================= */
+(function(){
+  var els = { d: $('#cdDays'), h: $('#cdHours'), m: $('#cdMins'), s: $('#cdSecs') };
+  function setNum(el, val){
+    var str = String(val);
+    if (el.textContent !== str){
+      el.textContent = str;
+      el.classList.remove('flipping');
+      void el.offsetWidth; // 重启动画
+      el.classList.add('flipping');
+    }
+  }
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function tick(){
+    var diff = CONFIG.weddingTime - Date.now();
+    if (diff <= 0){
+      $('#countdownGrid').style.display = 'none';
+      $('.countdown-sub').style.display = 'none';
+      $('#countdownPassed').style.display = 'block';
+      return;
+    }
+    setNum(els.d, Math.floor(diff / 86400000));
+    setNum(els.h, pad(Math.floor(diff / 3600000) % 24));
+    setNum(els.m, pad(Math.floor(diff / 60000) % 60));
+    setNum(els.s, pad(Math.floor(diff / 1000) % 60));
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+
+/* ================= 滚动渐入 & 圆点导航 ================= */
+(function(){
+  var sections = $$('.section');
+  // 圆点导航
+  var nav = $('#dotNav');
+  sections.forEach(function(sec){
+    var b = document.createElement('button');
+    b.setAttribute('data-label', sec.getAttribute('data-label') || '');
+    b.setAttribute('aria-label', '跳转到' + (sec.getAttribute('data-label') || ''));
+    b.addEventListener('click', function(){
+      sec.scrollIntoView({ behavior: 'smooth' });
+    });
+    nav.appendChild(b);
+  });
+  var dots = $$('#dotNav button');
+  // 板块切换后标签短暂显示（peek），悬停/触摸导航区时由 CSS 类控制
+  var peekTimer = null, lastBest = -1;
+  function peekLabel(){
+    nav.classList.add('peek');
+    clearTimeout(peekTimer);
+    peekTimer = setTimeout(function(){ nav.classList.remove('peek'); }, 1800);
+  }
+  nav.addEventListener('touchstart', function(){ nav.classList.add('touch-show'); }, { passive: true });
+  nav.addEventListener('touchend', function(){ nav.classList.remove('touch-show'); });
+  nav.addEventListener('touchcancel', function(){ nav.classList.remove('touch-show'); });
+  // 渐入：滚动驱动的确定性检测（不依赖 IO 初始回调，任何环境可靠）
+  var ticking = false;
+  function updateReveals(){
+    var limit = innerHeight * .92;
+    $$('.reveal:not(.visible)').forEach(function(el){
+      if (el.getBoundingClientRect().top < limit) el.classList.add('visible');
+    });
+  }
+  window.refreshReveals = updateReveals; // 供动态渲染的板块在重渲染后调用
+  function updateActiveDot(){
+    ticking = false;
+    var mid = window.scrollY + innerHeight / 2;
+    var best = 0, bestDist = Infinity;
+    sections.forEach(function(sec, i){
+      var r = sec.getBoundingClientRect();
+      var center = window.scrollY + r.top + r.height / 2;
+      var d = Math.abs(center - mid);
+      if (d < bestDist){ bestDist = d; best = i; }
+    });
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === best); });
+    if (lastBest === -1){
+      lastBest = best; // 首次定位不触发 peek
+    } else if (best !== lastBest){
+      lastBest = best;
+      peekLabel();
+    }
+  }
+  addEventListener('scroll', function(){
+    if (!ticking){
+      ticking = true;
+      requestAnimationFrame(function(){ updateActiveDot(); updateReveals(); ticking = false; });
+    }
+  }, { passive: true });
+  addEventListener('resize', function(){ updateActiveDot(); updateReveals(); });
+  // ticking 已在回调内复位
+  updateActiveDot();
+  updateReveals();
+  // 浏览器滚动恢复（刷新后还原滚动位置）不触发 scroll 事件，延迟补算几次
+  addEventListener('load', function(){ updateActiveDot(); updateReveals(); });
+  setTimeout(function(){ updateActiveDot(); updateReveals(); }, 300);
+  setTimeout(function(){ updateActiveDot(); updateReveals(); }, 1000);
+})();
+
+/* ================= 站点文案配置（主人可编辑，存 settings key='config'） ================= */
+var siteConfig = (function(){
+  var DEFAULT_CONFIG = {
+    groom: '张明', bride: '李悦',
+    dateText: '2027.02.08',                       // 封面/致谢显示用
+    dateTimeISO: '2027-02-08T11:00:00+08:00',     // 倒计时计算用
+    dateLabel: '周一 · 上午11点',                  // 封面日期行后半部分
+    lunarDate: '农历丁未年 正月初三',              // 封面农历行
+    address: 'xx省xx市xx区xx路xx号（xx酒店x楼宴会厅）',
+    story: [
+      { time: '2018 · 冬', title: '初次相遇', text: '那年冬天的一场雪，让两条平行的轨迹有了交点。人群中多看了你一眼，便再也忘不掉。' },
+      { time: '2019 · 春', title: '确定关系', text: '春风拂过江边的长堤，一句“在一起吧”，把往后余生都悄悄许给了你。' },
+      { time: '2026 · 春', title: '求婚', text: '单膝跪地的那一刻，星光落进你眼里的泪光。你说“我愿意”，是我听过最动听的回答。' },
+      { time: '2026 · 春', title: '订婚', text: '两家人围坐一堂，笑语盈盈。一纸婚约，定下的是两颗相守一生的心。' },
+      { time: '2027 · 春', title: '步入婚姻', text: '从今往后，柴米油盐是你，风花雪月也是你。执子之手，与子偕老。' }
+    ],
+    schedule: [
+      { time: '10:00', title: '宾客签到', text: '签到入场，与新人合影，领取伴手礼' },
+      { time: '10:40', title: '宾客入座', text: '暖场音乐响起，来宾按席卡入座' },
+      { time: '11:00', title: '婚礼仪式', text: '交换誓言与戒指，许下一生承诺' },
+      { time: '11:30', title: '婚宴开席', text: '新人敬酒，举杯共庆，共享午宴' },
+      { time: '13:00', title: '送客留念', text: '合影留念，恭送宾客，感恩莅临' }
+    ],
+    transport: [ // text 多行时每行渲染为一条列表项
+      { title: '自驾前往', text: '导航搜索「xx酒店」即达，沿路设有婚礼指示牌。' },
+      { title: '停车信息', text: '场地旁设有免费停车区域，现场有专人引导停车，车位充足，请按指引有序停放。' },
+      { title: '公共交通', text: '乘 xx 路公交至 xx 站，步行约 10 分钟即达\n建议提前规划行程，预留充足时间\n如需接送协助，请提前联系新人' }
+    ]
+  };
+  var TRANSPORT_ICONS = [
+    '<svg viewBox="0 0 24 24"><path d="M4 16v3a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h10v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-3M5 16l1.6-6.2A2 2 0 0 1 8.5 8.4h7a2 2 0 0 1 1.9 1.4L19 16M5 16h14"/><circle cx="8" cy="13" r="0.6"/><circle cx="16" cy="13" r="0.6"/></svg>',
+    '<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M9 21l1.5-4h3L15 21M9 7h6"/></svg>',
+    '<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 10h16M8 21l1-4m6 4l-1-4"/><circle cx="8.5" cy="13.5" r="0.6"/><circle cx="15.5" cy="13.5" r="0.6"/></svg>'
+  ];
+  var DELAYS = ['', ' d1', ' d2', ' d3'];
+  var cfg = clone(DEFAULT_CONFIG);
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  /* 以默认配置为底做字段级覆盖，远端缺字段时自动回退默认值 */
+  function merge(remote){
+    var c = clone(DEFAULT_CONFIG);
+    if (remote && typeof remote === 'object'){
+      for (var k in c){
+        if (Object.prototype.hasOwnProperty.call(c, k) && remote[k] != null) c[k] = remote[k];
+      }
+    }
+    return c;
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function refreshReveals(){ if (window.refreshReveals) window.refreshReveals(); }
+  function renderNames(elm){
+    if (!elm) return;
+    elm.innerHTML = '';
+    elm.appendChild(document.createTextNode(cfg.groom));
+    var amp = el('span', 'amp');
+    amp.innerHTML = '&amp;';
+    elm.appendChild(amp);
+    elm.appendChild(document.createTextNode(cfg.bride));
+  }
+  function render(){
+    renderNames($('#coverNames'));
+    renderNames($('#endingNames'));
+    var dt = $('#coverDateText'); if (dt) dt.textContent = cfg.dateText;
+    var dl = $('#coverDateLabel'); if (dl) dl.textContent = cfg.dateLabel;
+    var cl = $('#coverLunar'); if (cl) cl.textContent = cfg.lunarDate || '';
+    var ca = $('#coverAddressText'); if (ca) ca.textContent = cfg.address;
+    var cs = $('#coverSign'); if (cs) cs.textContent = cfg.groom + ' & ' + cfg.bride + ' 敬邀';
+    var ei = $('#endingInfo');
+    if (ei){
+      ei.innerHTML = '';
+      ei.appendChild(document.createTextNode(cfg.dateText + ' ' + cfg.dateLabel));
+      ei.appendChild(document.createElement('br'));
+      ei.appendChild(document.createTextNode(cfg.address));
+    }
+    var at = $('#addressText'); if (at) at.textContent = cfg.address;
+    // 我们的故事
+    var tl = $('#storyTimeline');
+    if (tl){
+      tl.innerHTML = '';
+      cfg.story.forEach(function(node){
+        var item = el('div', 'story-item reveal');
+        var card = el('div', 'story-card');
+        card.appendChild(el('p', 'story-date', node.time));
+        card.appendChild(el('h3', null, node.title));
+        card.appendChild(el('p', null, node.text));
+        item.appendChild(card);
+        tl.appendChild(item);
+      });
+    }
+    // 当日流程（时间轴，只显示时间+标题，描述收起）
+    var sc = $('#scheduleList');
+    if (sc){
+      sc.innerHTML = '';
+      cfg.schedule.forEach(function(node){
+        var item = el('div', 'schedule-item reveal');
+        item.appendChild(el('p', 'schedule-time', node.time));
+        item.appendChild(el('h3', null, node.title));
+        sc.appendChild(item);
+      });
+    }
+    // 交通指引（标题 chip，点击弹浮层看详情）
+    var tg = $('#transportGrid');
+    if (tg){
+      tg.innerHTML = '';
+      cfg.transport.forEach(function(t, i){
+        var chip = el('button', 'transport-chip reveal' + (DELAYS[i] || ''));
+        chip.type = 'button';
+        chip.innerHTML = TRANSPORT_ICONS[i % TRANSPORT_ICONS.length];
+        chip.appendChild(el('span', null, t.title));
+        chip.addEventListener('click', function(){ openTransportModal(t); });
+        tg.appendChild(chip);
+      });
+    }
+    refreshReveals();
+  }
+  /* 交通详情浮层 */
+  var transportModal = $('#transportModal');
+  function openTransportModal(t){
+    if (!transportModal) return;
+    $('#transportModalTitle').textContent = t.title;
+    var body = $('#transportModalBody');
+    body.innerHTML = '';
+    var lines = String(t.text || '').split('\n').filter(function(l){ return l.trim(); });
+    if (lines.length > 1){
+      var ul = el('ul');
+      lines.forEach(function(line){ ul.appendChild(el('li', null, line)); });
+      body.appendChild(ul);
+    } else {
+      body.appendChild(el('p', null, t.text));
+    }
+    transportModal.classList.add('open');
+  }
+  if (transportModal){
+    $('#transportModalClose').addEventListener('click', function(){ transportModal.classList.remove('open'); });
+    transportModal.addEventListener('click', function(e){ if (e.target === transportModal) transportModal.classList.remove('open'); });
+  }
+  /* 应用配置：同步 CONFIG（倒计时/导航/分享依赖）并重渲染 */
+  function apply(){
+    CONFIG.groom = cfg.groom;
+    CONFIG.bride = cfg.bride;
+    CONFIG.address = cfg.address;
+    var t = new Date(cfg.dateTimeISO).getTime();
+    if (!isNaN(t)) CONFIG.weddingTime = t;
+    if (typeof SHARE_DATA !== 'undefined'){
+      SHARE_DATA.title = '我们结婚啦｜' + cfg.groom + ' & ' + cfg.bride + '的婚礼邀请';
+      SHARE_DATA.text = cfg.dateText + ' ' + cfg.dateLabel + '，诚邀您见证我们的幸福时刻';
+    }
+    render();
+  }
+  render(); // 先用默认配置渲染
+  if (sb){
+    sb.from('settings').select('value').eq('key', 'config').maybeSingle().then(function(res){
+      var v = res && res.data && res.data.value;
+      if (!v) return;
+      try { cfg = merge(JSON.parse(v)); apply(); } catch(e){}
+    }).catch(function(){});
+  }
+  return {
+    get: function(){ return clone(cfg); },
+    save: function(newCfg, cb){
+      cfg = merge(newCfg);
+      if (!sb){ apply(); if (cb) cb(true); return; }
+      sb.from('settings').upsert({ key: 'config', value: JSON.stringify(cfg) }).then(function(res){
+        if (res.error){ toast('保存失败，请稍后再试'); if (cb) cb(false); return; }
+        apply();
+        toast('已保存，所有访客将看到最新版本');
+        if (cb) cb(true);
+      }).catch(function(){
+        toast('保存失败，请稍后再试');
+        if (cb) cb(false);
+      });
+    }
+  };
+})();
+
+/* ================= 主人编辑页 ================= */
+(function(){
+  var page = $('#editorPage'), body = $('#editorBody');
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function field(parent, label, value, opts){
+    opts = opts || {};
+    var g = el('div', 'form-group');
+    g.appendChild(el('label', null, label));
+    var input;
+    if (opts.textarea){
+      input = el('textarea');
+    } else {
+      input = el('input');
+      input.type = opts.type || 'text';
+    }
+    input.value = value == null ? '' : value;
+    if (opts.placeholder) input.placeholder = opts.placeholder;
+    g.appendChild(input);
+    parent.appendChild(g);
+    return input;
+  }
+  function group(title){
+    var g = el('div', 'editor-group');
+    g.appendChild(el('h4', null, title));
+    body.appendChild(g);
+    return g;
+  }
+  /* 动态行列表编辑器；fixed=true 时不允许增删行 */
+  function listEditor(parent, items, fields, fixed){
+    var wrap = el('div', 'editor-list');
+    parent.appendChild(wrap);
+    function addRow(item){
+      var row = el('div', 'editor-row');
+      var inputs = {};
+      fields.forEach(function(f){
+        inputs[f.key] = field(row, f.label, item[f.key], f);
+      });
+      if (!fixed){
+        var del = el('button', 'editor-row-del', '删除');
+        del.type = 'button';
+        del.addEventListener('click', function(){ wrap.removeChild(row); });
+        row.appendChild(del);
+      }
+      wrap.appendChild(row);
+      row._inputs = inputs;
+    }
+    items.forEach(addRow);
+    if (!fixed){
+      var addBtn = el('button', 'btn small editor-add', '+ 添加节点');
+      addBtn.type = 'button';
+      addBtn.addEventListener('click', function(){ addRow({}); });
+      parent.appendChild(addBtn);
+    }
+    return {
+      values: function(){
+        var out = [];
+        var rows = wrap.children;
+        for (var i = 0; i < rows.length; i++){
+          var o = {};
+          fields.forEach(function(f){ o[f.key] = rows[i]._inputs[f.key].value.trim(); });
+          out.push(o);
+        }
+        return out;
+      }
+    };
+  }
+  function toLocalInput(iso){
+    var m = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/.exec(iso || '');
+    return m ? m[1] : '';
+  }
+  function fromLocalInput(v){
+    v = (v || '').trim();
+    if (!v) return '';
+    return v.length === 16 ? v + ':00+08:00' : v;
+  }
+  var refs = null;
+  function open(){
+    var cfg = siteConfig.get();
+    body.innerHTML = '';
+    refs = {};
+    var g1 = group('基本信息');
+    refs.groom = field(g1, '新郎姓名', cfg.groom);
+    refs.bride = field(g1, '新娘姓名', cfg.bride);
+    refs.dateText = field(g1, '日期显示文本', cfg.dateText, { placeholder: '如 2027.02.08' });
+    refs.dateLabel = field(g1, '日期补充说明', cfg.dateLabel, { placeholder: '如 周一 · 上午11点' });
+    refs.lunarDate = field(g1, '农历日期（封面显示）', cfg.lunarDate, { placeholder: '如 农历丁未年 正月初三' });
+    refs.dateTimeISO = field(g1, '婚礼时间（倒计时用）', toLocalInput(cfg.dateTimeISO), { type: 'datetime-local' });
+    refs.address = field(g1, '婚礼地址', cfg.address);
+    var g2 = group('爱情故事（2~8 个节点）');
+    refs.story = listEditor(g2, cfg.story, [
+      { key: 'time', label: '时间' },
+      { key: 'title', label: '标题' },
+      { key: 'text', label: '内容', textarea: true }
+    ]);
+    var g4 = group('婚礼流程（时间轴，只显示时间和标题）');
+    refs.schedule = listEditor(g4, cfg.schedule, [
+      { key: 'time', label: '时间' },
+      { key: 'title', label: '标题' },
+      { key: 'text', label: '内容', textarea: true }
+    ]);
+    var g5 = group('交通指引（内容每行一条）');
+    refs.transport = listEditor(g5, cfg.transport, [
+      { key: 'title', label: '标题' },
+      { key: 'text', label: '内容', textarea: true }
+    ], true);
+    page.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    page.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function save(){
+    var cfg = {
+      groom: refs.groom.value.trim(),
+      bride: refs.bride.value.trim(),
+      dateText: refs.dateText.value.trim(),
+      dateLabel: refs.dateLabel.value.trim(),
+      lunarDate: refs.lunarDate.value.trim(),
+      dateTimeISO: fromLocalInput(refs.dateTimeISO.value),
+      address: refs.address.value.trim(),
+      story: refs.story.values(),
+      schedule: refs.schedule.values(),
+      transport: refs.transport.values()
+    };
+    if (!cfg.groom || !cfg.bride){ toast('请填写新郎和新娘姓名'); return; }
+    if (isNaN(new Date(cfg.dateTimeISO).getTime())){ toast('婚礼时间格式不正确'); return; }
+    if (!cfg.dateText){ toast('请填写日期显示文本'); return; }
+    if (cfg.story.length < 2 || cfg.story.length > 8){ toast('爱情故事需要 2~8 个节点'); return; }
+    if (cfg.schedule.length < 1){ toast('婚礼流程至少保留 1 个节点'); return; }
+    siteConfig.save(cfg, function(ok){ if (ok) close(); });
+  }
+  $('#hostEditBtn').addEventListener('click', function(){
+    if (!sb || !isHost) return;
+    open();
+  });
+  $('#editorCancel').addEventListener('click', close);
+  $('#editorSave').addEventListener('click', save);
+})();
+
+/* ================= 封面自定义上传 ================= */
+(function(){
+  var cover = $('#cover'), input = $('#coverFileInput'), restoreBtn = $('#restoreCoverBtn');
+  var currentCoverPath = null; // sb 模式下当前自定义封面的存储路径
+  function applyCustom(url){
+    cover.classList.add('has-custom');
+    cover.style.backgroundImage = 'linear-gradient(rgba(40,25,20,.15),rgba(40,25,20,.15)), url(' + url + ')';
+    updateHostUI();
+  }
+  function applyDefault(){
+    cover.classList.remove('has-custom');
+    cover.style.backgroundImage = '';
+    currentCoverPath = null;
+    updateHostUI();
+  }
+  if (sb){
+    sb.from('settings').select('value').eq('key', 'cover').maybeSingle()
+      .then(function(res){
+        var v = res && res.data && res.data.value;
+        if (!v) return;
+        try {
+          var o = JSON.parse(v);
+          if (o && o.path){
+            currentCoverPath = o.path;
+            applyCustom(photoUrl(o.path, o.t));
+          }
+        } catch(e){}
+      })
+      .catch(function(){});
+  } else {
+    var saved = lsGet(LS.cover, null);
+    if (saved) applyCustom(saved);
+  }
+  $('#coverUploadBtn').addEventListener('click', function(){
+    if (!hostVisible()) return;
+    input.click();
+  });
+  input.addEventListener('change', function(){
+    var file = input.files[0];
+    if (!file) return;
+    if (sb){
+      toast('正在上传封面…');
+      compressImage(file, 1600, .72).then(function(dataUrl){
+        var path = 'cover/' + Date.now() + '.jpg';
+        var oldPath = currentCoverPath;
+        return sb.storage.from('photos').upload(path, dataUrlToBlob(dataUrl), { contentType: 'image/jpeg' })
+          .then(function(up){
+            if (up.error) throw up.error;
+            var t = Date.now();
+            return sb.from('settings').upsert({ key: 'cover', value: JSON.stringify({ path: path, t: t }) })
+              .then(function(r){
+                if (r.error) throw r.error;
+                currentCoverPath = path;
+                applyCustom(photoUrl(path, t));
+                if (oldPath) sb.storage.from('photos').remove([oldPath]).then(function(){}, function(){});
+                toast('封面已更新');
+              });
+          });
+      }).catch(function(){ toast('封面上传失败，请稍后再试'); });
+    } else {
+      compressImage(file, 1600, .72).then(function(dataUrl){
+        if (lsSet(LS.cover, dataUrl)){
+          applyCustom(dataUrl);
+          toast('封面已更新');
+        }
+      }).catch(function(){ toast('图片读取失败，请换一张试试'); });
+    }
+    input.value = '';
+  });
+  restoreBtn.addEventListener('click', function(){
+    if (!hostVisible()) return;
+    if (sb){
+      var oldPath = currentCoverPath;
+      sb.from('settings').delete().eq('key', 'cover').then(function(r){
+        if (r.error){ toast('恢复失败，请稍后再试'); return; }
+        if (oldPath) sb.storage.from('photos').remove([oldPath]).then(function(){}, function(){});
+        applyDefault();
+        toast('已恢复默认封面');
+      }).catch(function(){ toast('恢复失败，请稍后再试'); });
+    } else {
+      localStorage.removeItem(LS.cover);
+      applyDefault();
+      toast('已恢复默认封面');
+    }
+  });
+})();
+
+/* ================= 相册 + 分组 + Lightbox ================= */
+var gallery = (function(){
+  var grid = $('#galleryGrid'), input = $('#photoFileInput');
+  var featuredWrap = $('#featuredWrap'), featuredScroll = $('#featuredScroll'), featuredHint = $('#featuredHint');
+  var albumsWrap = $('#albumsWrap'), albumScroll = $('#albumScroll');
+  var albumEmpty = $('#albumEmpty'), emptyHint = $('#albumEmptyHint'), emptyUpBtn = $('#emptyUploadBtn');
+  var groupPage = $('#groupPage'), groupGrid = $('#groupGrid'), groupTitle = $('#groupTitle'), groupRename = $('#groupRename');
+  var rankWrap = $('#rankWrap'), rankScroll = $('#rankScroll');
+  var lb = $('#lightbox'), lbImg = $('#lbImg'), lbCount = $('#lbCount'), lbDel = $('#lbDel'), lbCover = $('#lbCoverBtn'), lbLike = $('#lbLike');
+  // sb 模式：{id, path, url} 对象数组；本地模式：dataURL 字符串数组
+  var photos = sb ? [] : lsGet(LS.photos, []);
+  // 分组与精选元数据（存 settings key='album_meta'），defaultCover 为内置默认分组的封面
+  var DEFAULT_GROUP = { id: 'default', name: '我们的照片', coverPath: null };
+  var albumMeta = { groups: [], photoMeta: {}, defaultCover: null };
+  // lightbox 当前浏览集合
+  var viewList = [], viewType = 'all', viewGroupId = null, current = 0;
+  var currentGroupId = null, uploadGroupId = null;
+
+  /* ---------- 数据工具 ---------- */
+  // 默认分组被重命名后会实体化进 albumMeta.groups（id 仍为 'default'），此时不再叠加运行时兜底
+  function groupList(){
+    for (var i = 0; i < albumMeta.groups.length; i++){
+      if (albumMeta.groups[i].id === 'default') return albumMeta.groups.slice();
+    }
+    // 运行时兜底默认分组：无照片且已有其他分组时不显示
+    if (albumMeta.groups.length && photosOfGroup('default').length === 0) return albumMeta.groups.slice();
+    return [DEFAULT_GROUP].concat(albumMeta.groups);
+  }
+  function groupById(gid){
+    var gs = groupList();
+    for (var i = 0; i < gs.length; i++) if (gs[i].id === gid) return gs[i];
+    return gs[0];
+  }
+  function metaOf(path){ return albumMeta.photoMeta[path] || null; }
+  function photoGroupId(p){ var m = metaOf(p.path); return (m && m.groupId) ? m.groupId : 'default'; }
+  function photosOfGroup(gid){
+    return photos.filter(function(p){ return photoGroupId(p) === gid; });
+  }
+  function featuredPhotos(){
+    return photos.filter(function(p){ var m = metaOf(p.path); return m && m.featured; });
+  }
+  function isFeatured(path){ var m = metaOf(path); return !!(m && m.featured); }
+  function groupCoverPhoto(g){
+    if (g.coverPath){
+      for (var i = 0; i < photos.length; i++) if (photos[i].path === g.coverPath) return photos[i];
+    }
+    var list = photosOfGroup(g.id);
+    return list.length ? list[0] : null;
+  }
+  function saveMeta(cb){
+    if (!sb){ if (cb) cb(true); return; }
+    sb.from('settings').upsert({ key: 'album_meta', value: JSON.stringify(albumMeta) }).then(function(res){
+      if (res.error){ toast('保存失败，请稍后再试'); if (cb) cb(false); return; }
+      if (cb) cb(true);
+    }).catch(function(){ toast('保存失败，请稍后再试'); if (cb) cb(false); });
+  }
+  function refreshReveals(){ if (window.refreshReveals) window.refreshReveals(); }
+
+  /* ---------- 渲染 ---------- */
+  function makeThumb(src, onOpen, fallback){
+    var div = document.createElement('div');
+    div.className = 'gallery-item';
+    var img = document.createElement('img');
+    imgWithFallback(img, src, fallback);
+    img.alt = '照片';
+    img.loading = 'lazy';
+    div.appendChild(img);
+    div.addEventListener('click', onOpen);
+    return div;
+  }
+  var HEART_SVG = '<svg viewBox="0 0 24 24"><path d="M12 20s-6-4.3-8-8a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c-2 3.7-8 8-8 8z"/></svg>';
+  function heartBtn(path){
+    var b = document.createElement('button');
+    b.className = 'photo-fav' + (isFeatured(path) ? ' on' : '');
+    b.innerHTML = HEART_SVG;
+    b.setAttribute('aria-label', '加入/取消精选');
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleFeatured(path, b);
+    });
+    return b;
+  }
+  function toggleFeatured(path, btn){
+    var prev = isFeatured(path);
+    var m = metaOf(path) || {};
+    m.featured = !prev;
+    if (!m.featured && !m.groupId) delete albumMeta.photoMeta[path];
+    else albumMeta.photoMeta[path] = m;
+    if (btn) btn.classList.toggle('on', !prev);
+    saveMeta(function(ok){
+      if (ok){
+        toast(!prev ? '已加入精选' : '已取消精选');
+        render();
+      } else {
+        // 失败回滚
+        var mm = metaOf(path) || {};
+        mm.featured = prev;
+        if (!mm.featured && !mm.groupId) delete albumMeta.photoMeta[path];
+        else albumMeta.photoMeta[path] = mm;
+        if (btn) btn.classList.toggle('on', prev);
+      }
+    });
+  }
+  /* ---------- 访客点赞（复用 wishes 表：name='♥like'，text=JSON {p:照片路径, v:访客ID}） ---------- */
+  var LIKE_MARK = '♥like';
+  var visitorId = (function(){
+    var v = null;
+    try { v = localStorage.getItem('wedding_vid'); } catch(e){}
+    if (!v){
+      v = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      try { localStorage.setItem('wedding_vid', v); } catch(e){}
+    }
+    return v;
+  })();
+  var likeRows = []; // {id, p, v}
+  var likePending = {};
+  function likeCount(path){ var n = 0; for (var i = 0; i < likeRows.length; i++) if (likeRows[i].p === path) n++; return n; }
+  function myLike(path){
+    for (var i = 0; i < likeRows.length; i++) if (likeRows[i].p === path && likeRows[i].v === visitorId) return likeRows[i];
+    return null;
+  }
+  var LIKE_SVG = '<svg viewBox="0 0 24 24"><path d="M7 21v-9l4.2-8.4a1.8 1.8 0 0 1 3.3 1l-.9 4.4h5.6a1.8 1.8 0 0 1 1.8 2.2l-1.4 7a1.8 1.8 0 0 1-1.8 1.4H7zM7 12H4.4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1H7"/></svg>';
+  function likeBtn(path){
+    var b = document.createElement('button');
+    b.className = 'like-btn' + (myLike(path) ? ' on' : '');
+    b.setAttribute('data-path', path);
+    b.setAttribute('aria-label', '点赞');
+    b.innerHTML = LIKE_SVG + '<span>' + (likeCount(path) || '') + '</span>';
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleLike(path);
+    });
+    return b;
+  }
+  function toggleLike(path){
+    if (!sb || likePending[path]) return;
+    // 匿名访客无删除权限（RLS），点赞为单向操作，重复点击仅提示
+    if (myLike(path)){ toast('你已经赞过这张照片啦'); return; }
+    likePending[path] = true;
+    var temp = { id: 'tmp' + Date.now(), p: path, v: visitorId };
+    likeRows.push(temp);
+    refreshLikeUI();
+    sb.from('wishes').insert({ name: LIKE_MARK, text: JSON.stringify({ p: path, v: visitorId }) }).select()
+      .then(function(res){
+        likePending[path] = false;
+        if (!res.error && res.data && res.data[0]) temp.id = res.data[0].id;
+        else { likeRows = likeRows.filter(function(r){ return r !== temp; }); refreshLikeUI(); }
+      });
+  }
+  function refreshLikeUI(){
+    $$('.like-btn').forEach(function(b){
+      var p = b.getAttribute('data-path');
+      b.classList.toggle('on', !!myLike(p));
+      var s = b.querySelector('span');
+      var n = likeCount(p);
+      if (s) s.textContent = n || '';
+    });
+    if (lbLike.classList.contains('show')){
+      var item = viewList[current];
+      if (item && item.path){
+        lbLike.classList.toggle('on', !!myLike(item.path));
+        var ls = lbLike.querySelector('span');
+        var ln = likeCount(item.path);
+        if (ls) ls.textContent = ln || '赞';
+      }
+    }
+    renderRank();
+  }
+  function rankedPhotos(){
+    return photos.filter(function(p){ return likeCount(p.path) > 0; })
+      .sort(function(a, b){ return likeCount(b.path) - likeCount(a.path); })
+      .slice(0, 10);
+  }
+  function renderRank(){
+    if (!rankWrap) return;
+    var top = sb ? rankedPhotos() : [];
+    rankWrap.style.display = top.length ? 'block' : 'none';
+    rankScroll.innerHTML = '';
+    top.forEach(function(p, i){
+      var card = document.createElement('div');
+      card.className = 'featured-item';
+      var img = document.createElement('img');
+      imgWithFallback(img, p.thumb || p.url, p.url);
+      img.alt = '人气照片';
+      img.loading = 'lazy';
+      card.appendChild(img);
+      var badge = document.createElement('span');
+      badge.className = 'rank-badge' + (i < 3 ? ' top' : '');
+      badge.textContent = 'No.' + (i + 1);
+      card.appendChild(badge);
+      card.appendChild(likeBtn(p.path));
+      card.addEventListener('click', function(){
+        var list = rankedPhotos();
+        var idx = 0;
+        for (var k = 0; k < list.length; k++) if (list[k].path === p.path) idx = k;
+        openIn(list, idx, 'rank');
+      });
+      rankScroll.appendChild(card);
+    });
+  }
+  function uploadTile(text, gid){
+    var up = document.createElement('div');
+    up.className = 'gallery-upload';
+    up.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>' + text + '</span>';
+    up.addEventListener('click', function(){ uploadGroupId = gid || null; input.click(); });
+    return up;
+  }
+  function render(){
+    var hasPhotos = photos.length > 0;
+    albumEmpty.style.display = hasPhotos ? 'none' : 'block';
+    emptyHint.style.display = hostVisible() ? 'block' : 'none';
+    emptyUpBtn.style.display = hostVisible() ? 'inline-flex' : 'none';
+    if (!sb){
+      // 本地回退模式：单网格，无分组
+      featuredWrap.style.display = 'none';
+      rankWrap.style.display = 'none';
+      albumsWrap.style.display = 'none';
+      grid.style.display = hasPhotos ? 'grid' : 'none';
+      grid.innerHTML = '';
+      photos.forEach(function(src, i){
+        grid.appendChild(makeThumb(src, function(){ openIn(photos.slice(), i, 'local'); }));
+      });
+      if (hasPhotos && hostVisible()) grid.appendChild(uploadTile('上传照片', null));
+      refreshReveals();
+      return;
+    }
+    grid.style.display = 'none';
+    // 第一栏：精选
+    var feats = featuredPhotos();
+    featuredWrap.style.display = (hasPhotos && (feats.length > 0 || hostVisible())) ? 'block' : 'none';
+    featuredHint.style.display = (hostVisible() && feats.length === 0) ? 'block' : 'none';
+    featuredScroll.innerHTML = '';
+    feats.forEach(function(p){
+      var card = document.createElement('div');
+      card.className = 'featured-item';
+      var img = document.createElement('img');
+      imgWithFallback(img, p.thumb || p.url, p.url);
+      img.alt = '精选照片';
+      img.loading = 'lazy';
+      card.appendChild(img);
+      if (isHost) card.appendChild(heartBtn(p.path));
+      card.appendChild(likeBtn(p.path));
+      card.addEventListener('click', function(){
+        var list = featuredPhotos();
+        var idx = 0;
+        for (var k = 0; k < list.length; k++) if (list[k].path === p.path) idx = k;
+        openIn(list, idx, 'featured');
+      });
+      featuredScroll.appendChild(card);
+    });
+    // 第二栏：分组
+    albumsWrap.style.display = hasPhotos ? 'block' : 'none';
+    albumScroll.innerHTML = '';
+    groupList().forEach(function(g){
+      var list = photosOfGroup(g.id);
+      var card = document.createElement('div');
+      card.className = 'album-card';
+      var coverP = groupCoverPhoto(g);
+      if (coverP){
+        var img = document.createElement('img');
+        img.className = 'cover';
+        imgWithFallback(img, coverP.thumb || coverP.url, coverP.url);
+        img.alt = g.name;
+        img.loading = 'lazy';
+        card.appendChild(img);
+      } else {
+        var ph = document.createElement('div');
+        ph.className = 'cover-empty';
+        ph.textContent = '♡';
+        card.appendChild(ph);
+      }
+      var meta = document.createElement('div');
+      meta.className = 'meta';
+      var h = document.createElement('h3');
+      h.textContent = g.name;
+      var cnt = document.createElement('span');
+      cnt.textContent = list.length + ' 张';
+      meta.appendChild(h); meta.appendChild(cnt);
+      card.appendChild(meta);
+      card.addEventListener('click', function(){ openGroup(g.id); });
+      albumScroll.appendChild(card);
+    });
+    if (hostVisible()){
+      var add = document.createElement('div');
+      add.className = 'album-card add';
+      add.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>新建分组</span>';
+      add.addEventListener('click', openGroupModal);
+      albumScroll.appendChild(add);
+    }
+    if (currentGroupId) renderGroupPage('');
+    renderRank();
+    refreshReveals();
+  }
+
+  /* ---------- 分组详情页 ---------- */
+  function openGroup(gid){
+    currentGroupId = gid;
+    renderGroupPage('');
+    groupPage.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGroup(){
+    groupPage.classList.remove('open');
+    document.body.style.overflow = '';
+    currentGroupId = null;
+  }
+  function renderGroupPage(animClass){
+    var g = groupById(currentGroupId);
+    groupTitle.textContent = g.name;
+    groupRename.style.display = (sb && isHost) ? 'inline-flex' : 'none';
+    groupGrid.innerHTML = '';
+    var list = photosOfGroup(g.id);
+    list.forEach(function(p){
+      var div = makeThumb(p.thumb || p.url, function(){
+        var fresh = photosOfGroup(g.id);
+        var idx = 0;
+        for (var k = 0; k < fresh.length; k++) if (fresh[k].path === p.path) idx = k;
+        openIn(fresh, idx, 'group', g.id);
+      }, p.url);
+      if (isHost) div.appendChild(heartBtn(p.path));
+      div.appendChild(likeBtn(p.path));
+      groupGrid.appendChild(div);
+    });
+    if (!list.length){
+      var tip = document.createElement('p');
+      tip.className = 'album-empty-hint';
+      tip.style.gridColumn = '1/-1';
+      tip.style.textAlign = 'center';
+      tip.textContent = '这个分组还没有照片';
+      groupGrid.appendChild(tip);
+    }
+    if (hostVisible()) groupGrid.appendChild(uploadTile('上传照片', g.id));
+    groupGrid.classList.remove('slide-l', 'slide-r');
+    if (animClass){
+      void groupGrid.offsetWidth; // 重启动画
+      groupGrid.classList.add(animClass);
+    }
+  }
+  $('#groupBack').addEventListener('click', closeGroup);
+  // 左右滑动切换分组（与 lightbox 滑图是两层：lightbox 打开时不响应）
+  var gTouchX = null, gTouchY = null, gHoriz = false;
+  groupPage.addEventListener('touchstart', function(e){
+    if (lb.classList.contains('open')) return;
+    var t = e.touches[0];
+    gTouchX = t.clientX; gTouchY = t.clientY; gHoriz = false;
+  }, { passive: true });
+  groupPage.addEventListener('touchmove', function(e){
+    if (gTouchX === null) return;
+    var t = e.touches[0];
+    var dx = t.clientX - gTouchX, dy = t.clientY - gTouchY;
+    if (!gHoriz && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.4) gHoriz = true;
+  }, { passive: true });
+  groupPage.addEventListener('touchend', function(e){
+    if (gTouchX === null) return;
+    var dx = e.changedTouches[0].clientX - gTouchX;
+    if (gHoriz && Math.abs(dx) > 60) switchGroup(dx < 0 ? 1 : -1);
+    gTouchX = null; gHoriz = false;
+  });
+  function switchGroup(dir){
+    var gs = groupList();
+    var idx = 0;
+    for (var i = 0; i < gs.length; i++) if (gs[i].id === currentGroupId) idx = i;
+    var next = (idx + dir + gs.length) % gs.length;
+    currentGroupId = gs[next].id;
+    renderGroupPage(dir > 0 ? 'slide-l' : 'slide-r');
+  }
+
+  /* ---------- 新建 / 重命名分组弹窗 ---------- */
+  var groupModal = $('#groupModal'), groupNameInput = $('#groupNameInput');
+  var groupModalTitle = $('#groupModalTitle'), groupCreateBtn = $('#groupCreateBtn');
+  var renameGroupId = null; // 非 null 时为重命名模式
+  function openGroupModal(){
+    renameGroupId = null;
+    groupModalTitle.textContent = '新建分组';
+    groupCreateBtn.textContent = '创建';
+    groupNameInput.value = '';
+    groupModal.classList.add('open');
+    setTimeout(function(){ groupNameInput.focus(); }, 60);
+  }
+  function openRenameModal(gid){
+    var g = groupById(gid);
+    renameGroupId = gid;
+    groupModalTitle.textContent = '重命名分组';
+    groupCreateBtn.textContent = '保存';
+    groupNameInput.value = g.name;
+    groupModal.classList.add('open');
+    setTimeout(function(){ groupNameInput.focus(); groupNameInput.select(); }, 60);
+  }
+  function closeGroupModal(){ groupModal.classList.remove('open'); }
+  groupRename.addEventListener('click', function(){
+    if (!sb || !isHost || !currentGroupId) return;
+    openRenameModal(currentGroupId);
+  });
+  $('#groupModalClose').addEventListener('click', closeGroupModal);
+  groupModal.addEventListener('click', function(e){ if (e.target === groupModal) closeGroupModal(); });
+  function renameGroup(gid, name){
+    var g = null, materialized = false;
+    for (var i = 0; i < albumMeta.groups.length; i++){
+      if (albumMeta.groups[i].id === gid){ g = albumMeta.groups[i]; break; }
+    }
+    if (!g){
+      if (gid !== 'default') return;
+      // 重命名默认分组：实体化进 groups（封面沿用 defaultCover），此后不再走运行时兜底
+      g = { id: 'default', name: DEFAULT_GROUP.name, coverPath: DEFAULT_GROUP.coverPath };
+      albumMeta.groups.unshift(g);
+      materialized = true;
+    }
+    var prevName = g.name;
+    if (name === prevName){ closeGroupModal(); return; }
+    g.name = name;
+    saveMeta(function(ok){
+      if (!ok){
+        g.name = prevName;
+        if (materialized){
+          var ix = albumMeta.groups.indexOf(g);
+          if (ix >= 0) albumMeta.groups.splice(ix, 1);
+        }
+        return;
+      }
+      closeGroupModal();
+      render();
+      toast('分组已重命名');
+    });
+  }
+  groupCreateBtn.addEventListener('click', function(){
+    if (!sb || !isHost) return;
+    var name = groupNameInput.value.trim();
+    if (!name){ toast('请填写分组名称'); return; }
+    if (name.length > 20){ toast('分组名称最长 20 个字符'); return; }
+    if (renameGroupId){ renameGroup(renameGroupId, name); return; }
+    var g = { id: 'g' + Date.now(), name: name, coverPath: null };
+    albumMeta.groups.push(g);
+    saveMeta(function(ok){
+      if (!ok){ albumMeta.groups.pop(); return; }
+      closeGroupModal();
+      render();
+      toast('分组已创建');
+      openGroup(g.id); // 可立即在该组批量上传
+    });
+  });
+
+  /* ---------- Lightbox ---------- */
+  function openIn(list, idx, type, gid){
+    viewList = list;
+    viewType = type;
+    viewGroupId = gid || null;
+    current = idx;
+    update();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function itemSrc(item){ return item.url !== undefined ? item.url : item; }
+  function itemMedium(item){ return (item && item.medium) ? item.medium : itemSrc(item); }
+  function update(){
+    if (viewList.length === 0){ close(); return; }
+    current = (current + viewList.length) % viewList.length;
+    var item = viewList[current];
+    var full = itemSrc(item), mid = itemMedium(item);
+    imgWithFallback(lbImg, mid, mid !== full ? full : null);
+    lbCount.textContent = (current + 1) + ' / ' + viewList.length;
+    lbDel.classList.toggle('show', hostVisible());
+    lbCover.classList.toggle('show', !!(sb && isHost && viewType === 'group'));
+    // 访客点赞
+    var canLike = !!(sb && item && item.path);
+    lbLike.classList.toggle('show', canLike);
+    if (canLike){
+      lbLike.classList.toggle('on', !!myLike(item.path));
+      var ln = likeCount(item.path);
+      lbLike.innerHTML = LIKE_SVG + '<span>' + (ln || '赞') + '</span>';
+    }
+    // 预加载相邻两张，滑动切换不等待
+    [current - 1, current + 1].forEach(function(i){
+      var n = viewList[(i + viewList.length) % viewList.length];
+      if (n){ var im = new Image(); im.src = itemMedium(n); }
+    });
+  }
+  $('#lbClose').addEventListener('click', close);
+  lbLike.addEventListener('click', function(e){
+    e.stopPropagation();
+    var item = viewList[current];
+    if (item && item.path) toggleLike(item.path);
+  });
+  $('#lbPrev').addEventListener('click', function(){ current--; update(); });
+  $('#lbNext').addEventListener('click', function(){ current++; update(); });
+  lb.addEventListener('click', function(e){
+    if (suppressClick){ suppressClick = false; return; } // 拖拽后的合成 click 不触发关闭
+    if (e.target === lb) close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft'){ current--; update(); }
+    if (e.key === 'ArrowRight'){ current++; update(); }
+  });
+  // 滑动切换：Pointer Events 统一触屏/鼠标，1:1 跟手，松手从当前位置连续过渡（可中断）
+  var dragStartX = null, dragX = 0, dragging = false, activePointer = null, suppressClick = false;
+  function dragStart(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.target.closest('button')) return; // 不拦截按钮点击
+    activePointer = e.pointerId;
+    try { lb.setPointerCapture(activePointer); } catch(err){}
+    dragStartX = e.clientX;
+    dragX = 0;
+    dragging = true;
+    lbImg.style.transition = 'none';
+  }
+  function dragMove(e){
+    if (!dragging || e.pointerId !== activePointer) return;
+    dragX = e.clientX - dragStartX;
+    lbImg.style.transform = 'translateX(' + dragX + 'px)';
+    lbImg.style.opacity = String(1 - Math.min(Math.abs(dragX) / 600, .35));
+  }
+  function dragEnd(e){
+    if (!dragging || e.pointerId !== activePointer) return;
+    dragging = false;
+    activePointer = null;
+    if (Math.abs(dragX) > 8){
+      suppressClick = true;
+      setTimeout(function(){ suppressClick = false; }, 120);
+    }
+    var threshold = Math.min(80, innerWidth * .2);
+    if (Math.abs(dragX) > threshold){
+      // 换图后从拖拽到达的位置飞入，运动连续无跳变
+      current += dragX < 0 ? 1 : -1;
+      update();
+      lbImg.style.transition = 'none';
+      lbImg.style.transform = 'translateX(' + dragX + 'px)';
+      lbImg.style.opacity = String(1 - Math.min(Math.abs(dragX) / 600, .35));
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          lbImg.style.transition = 'transform .28s ease-out, opacity .28s ease-out';
+          lbImg.style.transform = 'translateX(0)';
+          lbImg.style.opacity = '1';
+        });
+      });
+    } else {
+      // 未过阈值：从当前位置回弹
+      lbImg.style.transition = 'transform .25s ease-out, opacity .25s ease-out';
+      lbImg.style.transform = 'translateX(0)';
+      lbImg.style.opacity = '1';
+    }
+    dragStartX = null;
+  }
+  lb.addEventListener('pointerdown', dragStart);
+  lb.addEventListener('pointermove', dragMove);
+  lb.addEventListener('pointerup', dragEnd);
+  lb.addEventListener('pointercancel', dragEnd);
+  // 删除照片（同时清理 album_meta 引用与分组封面）
+  function removePhoto(path){
+    for (var i = 0; i < photos.length; i++) if (photos[i].path === path){ photos.splice(i, 1); break; }
+    if (albumMeta.photoMeta[path]) delete albumMeta.photoMeta[path];
+    var gs = groupList();
+    gs.forEach(function(g){ if (g.coverPath === path) g.coverPath = null; });
+    if (albumMeta.defaultCover === path) albumMeta.defaultCover = null;
+    saveMeta(function(){});
+  }
+  function rebuildView(){
+    if (viewType === 'featured') viewList = featuredPhotos();
+    else if (viewType === 'group') viewList = photosOfGroup(viewGroupId);
+    else viewList = photos.slice();
+  }
+  function afterDelete(){
+    rebuildView();
+    render();
+    if (current >= viewList.length) current = viewList.length - 1;
+    update();
+  }
+  lbDel.addEventListener('click', function(){
+    if (!hostVisible()) return;
+    var item = viewList[current];
+    if (item == null) return;
+    if (sb){
+      if (!item.path) return;
+      sb.from('photos').delete().eq('id', item.id).then(function(r){
+        if (r.error){ toast('删除失败，请稍后再试'); return; }
+        sb.storage.from('photos').remove([item.path, 'thumbs/' + item.path.split('/').pop(), 'medium/' + item.path.split('/').pop()]).then(function(){}, function(){});
+        removePhoto(item.path);
+        afterDelete();
+        toast('照片已删除');
+      }).catch(function(){ toast('删除失败，请稍后再试'); });
+      return;
+    }
+    photos.splice(current, 1);
+    lsSet(LS.photos, photos);
+    afterDelete();
+    toast('照片已删除');
+  });
+  // 设为分组封面
+  lbCover.addEventListener('click', function(){
+    if (!sb || !isHost || viewType !== 'group') return;
+    var item = viewList[current];
+    if (!item || !item.path) return;
+    var g = groupById(viewGroupId);
+    var prev = g.coverPath;
+    g.coverPath = item.path;
+    if (g.id === 'default') albumMeta.defaultCover = item.path;
+    saveMeta(function(ok){
+      if (ok){
+        render();
+        toast('已设为分组封面');
+      } else {
+        g.coverPath = prev;
+        if (g.id === 'default') albumMeta.defaultCover = prev;
+      }
+    });
+  });
+  // 批量上传（可指定归属分组）
+  input.addEventListener('change', function(){
+    var files = Array.prototype.slice.call(input.files);
+    var gid = uploadGroupId;
+    uploadGroupId = null;
+    if (!files.length) return;
+    toast('正在压缩上传 ' + files.length + ' 张照片…');
+    if (sb){
+      // 逐张顺序上传，保证顺序与文件名唯一
+      var uploaded = [];
+      var metaDirty = false;
+      var chain = Promise.resolve();
+      files.forEach(function(f, i){
+        chain = chain.then(function(){
+          return Promise.all([compressImage(f, 1200, .7), compressImage(f, 480, .7)]).then(function(rs){
+            var path = 'gallery/' + Date.now() + '-' + i + '.jpg';
+            var base = path.split('/').pop();
+            var blob = dataUrlToBlob(rs[0]);
+            return sb.storage.from('photos').upload(path, blob, { contentType: 'image/jpeg' })
+              .then(function(up){
+                if (up.error) throw up.error;
+                // 缩略图(480px)/中图副本，失败不阻塞主流程
+                sb.storage.from('photos').upload('thumbs/' + base, dataUrlToBlob(rs[1]), { contentType: 'image/jpeg' }).then(function(){});
+                sb.storage.from('photos').upload('medium/' + base, blob, { contentType: 'image/jpeg' }).then(function(){});
+                return sb.from('photos').insert({ path: path }).select();
+              })
+              .then(function(ins){
+                if (ins.error) throw ins.error;
+                var row = ins.data && ins.data[0];
+                var t = Date.now();
+                uploaded.push({ id: row ? row.id : null, path: path, url: photoUrl(path, t),
+                  thumb: photoUrl('thumbs/' + base, t), medium: photoUrl('medium/' + base, t) });
+                if (gid && gid !== 'default'){
+                  albumMeta.photoMeta[path] = { groupId: gid, featured: false };
+                  metaDirty = true;
+                }
+              });
+          });
+        });
+      });
+      chain.then(function(){
+        photos = photos.concat(uploaded);
+        if (metaDirty) saveMeta(function(){});
+        render();
+        toast('上传成功');
+      }).catch(function(){
+        if (uploaded.length){
+          photos = photos.concat(uploaded);
+          if (metaDirty) saveMeta(function(){});
+          render();
+        }
+        toast('部分图片上传失败');
+      });
+      input.value = '';
+      return;
+    }
+    Promise.all(files.map(function(f){ return compressImage(f, 1200, .7); }))
+      .then(function(list){
+        photos = photos.concat(list);
+        if (lsSet(LS.photos, photos)){
+          render();
+          toast('上传成功，已保存到本地');
+        } else {
+          // 存储失败则回滚
+          photos = photos.slice(0, photos.length - list.length);
+        }
+      })
+      .catch(function(){ toast('部分图片读取失败'); });
+    input.value = '';
+  });
+  emptyUpBtn.addEventListener('click', function(){ uploadGroupId = 'default'; input.click(); });
+  render();
+  if (sb){
+    sb.from('photos').select('*').order('created_at').then(function(res){
+      if (res.error || !res.data) return;
+      photos = res.data.map(function(r){
+        var t = new Date(r.created_at).getTime();
+        return { id: r.id, path: r.path, url: photoUrl(r.path, t),
+          thumb: photoUrlSized(r.path, 'thumbs', t), medium: photoUrlSized(r.path, 'medium', t) };
+      });
+      render();
+    }).catch(function(){});
+    sb.from('settings').select('value').eq('key', 'album_meta').maybeSingle().then(function(res){
+      var v = res && res.data && res.data.value;
+      if (!v) return;
+      try {
+        var o = JSON.parse(v);
+        if (o && typeof o === 'object'){
+          albumMeta.groups = o.groups || [];
+          albumMeta.photoMeta = o.photoMeta || {};
+          albumMeta.defaultCover = o.defaultCover || null;
+          DEFAULT_GROUP.coverPath = albumMeta.defaultCover;
+          render();
+        }
+      } catch(e){}
+    }).catch(function(){});
+    // 点赞数据（独立于照片加载，完成后刷新计数与人气榜）
+    sb.from('wishes').select('id,text').eq('name', LIKE_MARK).then(function(res){
+      if (!res.error && res.data){
+        likeRows = res.data.map(function(r){
+          try { var o = JSON.parse(r.text); return { id: r.id, p: o.p, v: o.v }; }
+          catch(e){ return null; }
+        }).filter(function(r){ return r && r.p; });
+        refreshLikeUI();
+      }
+    }).catch(function(){});
+  }
+  onHostChange(render);
+  return { render: render };
+})();
+
+/* ================= 一键导航 ================= */
+$$('[data-nav]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var type = btn.getAttribute('data-nav');
+    var name = encodeURIComponent('婚礼地点');
+    var addr = encodeURIComponent(CONFIG.address);
+    var url;
+    if (type === 'amap'){
+      url = CONFIG.amapShare;
+    } else if (type === 'baidu'){
+      url = 'https://api.map.baidu.com/marker?location=' + CONFIG.bd.lat + ',' + CONFIG.bd.lng
+        + '&title=' + name + '&content=' + addr + '&output=html&coord_type=bd09ll';
+    } else {
+      url = 'https://maps.apple.com/?q=' + name + '&ll=' + CONFIG.gcj.lat + ',' + CONFIG.gcj.lng;
+    }
+    window.open(url, '_blank');
+  });
+});
+
+/* ================= 表单校验工具 ================= */
+function setError(id, msg){
+  var el = document.querySelector('.form-error[data-for="' + id + '"]');
+  if (el) el.textContent = msg || '';
+}
+function validPhone(v){ return /^1[3-9]\d{9}$/.test(v); }
+/* 输入过程中即时清除对应错误（内联校验反馈） */
+$$('#rsvpForm input, #rsvpForm select, #rsvpForm textarea, .wish-form input, .wish-form textarea')
+  .forEach(function(el){
+    el.addEventListener('input', function(){ setError(el.id, ''); });
+  });
+
+/* ================= 祝福墙 ================= */
+var wishes = (function(){
+  var DEFAULTS = [
+    { name: '伴娘团', text: '青青一定要幸福呀！从校服到婚纱，我们都看在眼里，祝福你们白头偕老！', time: '2026.09' },
+    { name: '大学室友 老王', text: '晖哥终于把自己嫁出去了（不是）。祝二位琴瑟和鸣，早生贵子！', time: '2026.09' },
+    { name: '姑姑一家', text: '祝二位新婚快乐，永结同心，和和美美一辈子！', time: '2026.09' }
+  ];
+  var listEl = $('#wishList');
+  var stored = sb ? [] : lsGet(LS.wishes, []);
+  function fmtTime(d){
+    d = d || new Date();
+    return d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate());
+  }
+  function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+  function render(freshFirst){
+    listEl.innerHTML = '';
+    var all = stored.slice().reverse().concat(DEFAULTS); // 新祝福在前
+    all.forEach(function(w, i){
+      var card = document.createElement('div');
+      card.className = 'wish-card' + (freshFirst && i === 0 ? ' fresh' : '');
+      var name = document.createElement('div');
+      name.className = 'w-name';
+      var span = document.createElement('span');
+      span.textContent = w.name;
+      var time = document.createElement('span');
+      time.className = 'w-time';
+      time.textContent = w.time;
+      name.appendChild(span); name.appendChild(time);
+      var p = document.createElement('p');
+      p.textContent = w.text;
+      card.appendChild(name); card.appendChild(p);
+      // 主人可删除云端祝福（内置默认祝福不可删）
+      if (sb && isHost && w.id){
+        var del = document.createElement('button');
+        del.className = 'wish-del';
+        del.textContent = '×';
+        del.setAttribute('aria-label', '删除这条祝福');
+        del.addEventListener('click', function(){
+          if (!confirm('确定删除这条祝福吗？')) return;
+          sb.from('wishes').delete().eq('id', w.id).then(function(r){
+            if (r.error){ toast('删除失败，请稍后再试'); return; }
+            for (var k = 0; k < stored.length; k++){
+              if (stored[k].id === w.id){ stored.splice(k, 1); break; }
+            }
+            render();
+            toast('祝福已删除');
+          }).catch(function(){ toast('删除失败，请稍后再试'); });
+        });
+        card.appendChild(del);
+      }
+      listEl.appendChild(card);
+    });
+  }
+  function add(name, text){
+    if (sb){
+      return sb.from('wishes').insert({ name: name, text: text }).select().then(function(res){
+        if (res.error){ toast('祝福发送失败，请稍后再试'); return false; }
+        var row = res.data && res.data[0];
+        stored.push({
+          id: row ? row.id : null,
+          name: name,
+          text: text,
+          time: row && row.created_at ? fmtTime(new Date(row.created_at)) : fmtTime()
+        });
+        render(true);
+        return true;
+      }).catch(function(){
+        toast('祝福发送失败，请稍后再试');
+        return false;
+      });
+    }
+    stored.push({ name: name, text: text, time: fmtTime() });
+    if (lsSet(LS.wishes, stored)){
+      render(true);
+      return true;
+    }
+    stored.pop();
+    return false;
+  }
+  $('#wishSubmit').addEventListener('click', function(){
+    var name = $('#wishName').value.trim();
+    var text = $('#wishText').value.trim();
+    var ok = true;
+    if (!name){ setError('wishName', '请填写您的名字'); ok = false; } else setError('wishName');
+    if (!text){ setError('wishText', '请写下祝福内容'); ok = false; } else setError('wishText');
+    if (!ok) return;
+    var res = add(name, text);
+    function done(success){
+      if (!success) return;
+      $('#wishName').value = '';
+      $('#wishText').value = '';
+      toast('祝福已送出 ♡');
+    }
+    if (res && typeof res.then === 'function') res.then(done);
+    else done(res);
+  });
+  render();
+  if (sb){
+    sb.from('wishes').select('*').order('created_at').then(function(res){
+      if (res.error || !res.data) return;
+      stored = res.data.filter(function(r){ return r.name !== '♥like'; }).map(function(r){
+        return { id: r.id, name: r.name, text: r.text, time: fmtTime(new Date(r.created_at)) };
+      });
+      render();
+    }).catch(function(){});
+  }
+  onHostChange(function(){ render(); });
+  return { add: add, render: render };
+})();
+
+/* ================= 出席回执 ================= */
+(function(){
+  var form = $('#rsvpForm');
+  var adminBtn = $('#rsvpAdminBtn');
+  var modal = $('#rsvpModal'), listEl = $('#rsvpList');
+  function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+  function fmtRsvpTime(iso){
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate()) +
+           ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+  function showSuccess(name, count){
+    form.style.display = 'none';
+    var s = $('#rsvpSuccess');
+    $('#rsvpSuccessText').textContent = count === '0'
+      ? name + '，感谢您的祝福，我们会把幸福传递给您！'
+      : name + '，已收到您 ' + count + ' 人的出席回执，期待与您相见！';
+    s.style.display = 'block';
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = $('#rsvpName').value.trim();
+    var count = $('#rsvpCount').value;
+    var phone = $('#rsvpPhone').value.trim();
+    var wish = $('#rsvpWish').value.trim();
+    var ok = true;
+    if (!name){ setError('rsvpName', '请填写您的姓名'); ok = false; } else setError('rsvpName');
+    if (count === ''){ setError('rsvpCount', '请选择出席人数'); ok = false; } else setError('rsvpCount');
+    if (!validPhone(phone)){ setError('rsvpPhone', '请输入正确的 11 位手机号'); ok = false; } else setError('rsvpPhone');
+    if (!ok) return;
+    if (sb){
+      sb.from('rsvp').insert({ name: name, guests: parseInt(count, 10), phone: phone, wish: wish || null })
+        .then(function(res){
+          if (res.error){ toast('回执提交失败，请稍后再试'); return; }
+          // 祝福语同步到祝福墙
+          if (wish) wishes.add(name, wish);
+          showSuccess(name, count);
+          toast('回执提交成功');
+        })
+        .catch(function(){ toast('回执提交失败，请稍后再试'); });
+      return;
+    }
+    var records = lsGet(LS.rsvp, []);
+    records.push({ name: name, count: count, phone: phone, wish: wish, time: new Date().toISOString() });
+    if (!lsSet(LS.rsvp, records)) return;
+    // 祝福语同步到祝福墙
+    if (wish) wishes.add(name, wish);
+    showSuccess(name, count);
+    toast('回执提交成功');
+  });
+  /* 主人查看/管理回执 */
+  function loadRsvp(){
+    listEl.innerHTML = '<p class="rsvp-empty">加载中…</p>';
+    sb.from('rsvp').select('*').order('created_at', { ascending: false }).then(function(res){
+      if (res.error){ listEl.innerHTML = '<p class="rsvp-empty">加载失败，请稍后再试</p>'; return; }
+      var rows = res.data || [];
+      if (!rows.length){ listEl.innerHTML = '<p class="rsvp-empty">暂无回执</p>'; return; }
+      listEl.innerHTML = '';
+      rows.forEach(function(r){
+        var item = document.createElement('div');
+        item.className = 'rsvp-item';
+        var head = document.createElement('div');
+        head.className = 'r-head';
+        var nm = document.createElement('strong');
+        nm.textContent = r.name + ' · ' + r.guests + ' 人';
+        var del = document.createElement('button');
+        del.className = 'r-del';
+        del.textContent = '删除';
+        del.addEventListener('click', function(){
+          if (!confirm('确定删除 ' + r.name + ' 的回执吗？')) return;
+          sb.from('rsvp').delete().eq('id', r.id).then(function(dr){
+            if (dr.error){ toast('删除失败，请稍后再试'); return; }
+            loadRsvp();
+            toast('回执已删除');
+          }).catch(function(){ toast('删除失败，请稍后再试'); });
+        });
+        head.appendChild(nm); head.appendChild(del);
+        var meta = document.createElement('p');
+        meta.className = 'r-meta';
+        meta.textContent = r.phone + ' · ' + fmtRsvpTime(r.created_at);
+        item.appendChild(head); item.appendChild(meta);
+        if (r.wish){
+          var w = document.createElement('p');
+          w.className = 'r-wish';
+          w.textContent = '祝福：' + r.wish;
+          item.appendChild(w);
+        }
+        listEl.appendChild(item);
+      });
+    }).catch(function(){ listEl.innerHTML = '<p class="rsvp-empty">加载失败，请稍后再试</p>'; });
+  }
+  adminBtn.addEventListener('click', function(){
+    if (!sb || !isHost) return;
+    modal.classList.add('open');
+    loadRsvp();
+  });
+  $('#rsvpModalClose').addEventListener('click', function(){ modal.classList.remove('open'); });
+  modal.addEventListener('click', function(e){ if (e.target === modal) modal.classList.remove('open'); });
+})();
+
+/* ================= 分享引导 & 回到顶部 ================= */
+/* ================= 分享 & 回到顶部 ================= */
+var SHARE_DATA = {
+  title: '我们结婚啦｜张明 & 李悦的婚礼邀请',
+  text: '2027年2月8日 周一上午11点，诚邀您见证我们的幸福时刻',
+  url: location.href
+};
+function isWeChat(){ return /MicroMessenger/i.test(navigator.userAgent); }
+function copyShareLink(){
+  var text = SHARE_DATA.title + '\n' + SHARE_DATA.text + '\n' + SHARE_DATA.url;
+  function done(){ toast('链接已复制，去粘贴给好友吧'); }
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy') ? done() : toast('复制失败，请手动复制地址栏链接');
+    } catch(e){
+      toast('复制失败，请手动复制地址栏链接');
+    }
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done, fallback);
+  } else {
+    fallback();
+  }
+}
+$('#shareBtn').addEventListener('click', function(){
+  // 优先系统原生分享面板（Safari/Chrome 等）；微信内置浏览器不支持则走引导遮罩
+  if (navigator.share && !isWeChat()){
+    navigator.share(SHARE_DATA).catch(function(err){
+      if (err && err.name === 'AbortError') return; // 用户主动取消，不打扰
+      $('#shareMask').classList.add('open');
+    });
+  } else {
+    $('#shareMask').classList.add('open');
+    if (!isWeChat()) copyShareLink(); // 无原生分享能力的浏览器：自动复制链接
+  }
+});
+$('#copyLinkBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  copyShareLink();
+});
+$('#shareMask').addEventListener('click', function(){
+  $('#shareMask').classList.remove('open');
+});
+$('#backTopBtn').addEventListener('click', function(){
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>
