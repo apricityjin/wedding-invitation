@@ -462,8 +462,8 @@ input,textarea,select{font-family:inherit;font-size:16px}
 .lightbox img{
   max-width:92vw;max-height:72vh;object-fit:contain;border-radius:8px;
   box-shadow:0 10px 50px rgba(0,0,0,.5);
-  touch-action:pan-y;user-select:none;-webkit-user-drag:none;
-  will-change:transform;
+  touch-action:none;user-select:none;-webkit-user-drag:none;
+  will-change:transform;transform-origin:center center;
 }
 .lightbox-count{color:#E8D5B5;font-family:'Cormorant Garamond',serif;letter-spacing:2px;margin-top:14px;font-size:14px}
 .lightbox-btn{
@@ -2356,11 +2356,17 @@ var gallery = (function(){
   function close(){
     lb.classList.remove('open');
     document.body.style.overflow = '';
+    resetZoom();
+    lbImg.style.transform = '';
+    lbImg.style.opacity = '1';
   }
   function itemSrc(item){ return item.url !== undefined ? item.url : item; }
   function itemMedium(item){ return (item && item.medium) ? item.medium : itemSrc(item); }
   function update(){
     if (viewList.length === 0){ close(); return; }
+    resetZoom();
+    lbImg.style.transform = '';
+    lbImg.style.opacity = '1';
     current = (current + viewList.length) % viewList.length;
     var item = viewList[current];
     var full = itemSrc(item), mid = itemMedium(item);
@@ -2400,31 +2406,151 @@ var gallery = (function(){
     if (e.key === 'ArrowLeft'){ current--; update(); }
     if (e.key === 'ArrowRight'){ current++; update(); }
   });
-  // 滑动切换：Pointer Events 统一触屏/鼠标，1:1 跟手，松手从当前位置连续过渡（可中断）
+  // 手势：单指滑动切换 / 双指捏合缩放 / 放大后单指拖动 / 双击放大还原
+  // Pointer Events 统一触屏/鼠标；未放大时保持 1:1 跟手滑图，松手连续过渡（可中断）
   var dragStartX = null, dragX = 0, dragging = false, activePointer = null, suppressClick = false;
+  var pointers = {};           // 当前按下的所有触点
+  var pinch = null;            // 双指捏合的基准状态
+  var zoom = 1, panX = 0, panY = 0;
+  var panStart = null, lastTap = 0;
+  function applyTransform(dragOffsetX){
+    var x = panX + (dragOffsetX || 0);
+    lbImg.style.transform = 'translate(' + x + 'px,' + panY + 'px) scale(' + zoom + ')';
+  }
+  function clampPan(){
+    if (zoom <= 1){ panX = 0; panY = 0; return; }
+    var w = lbImg.clientWidth * zoom, h = lbImg.clientHeight * zoom;
+    var mx = Math.max(0, (w - innerWidth) / 2) + 60;
+    var my = Math.max(0, (h - innerHeight) / 2) + 60;
+    panX = Math.max(-mx, Math.min(mx, panX));
+    panY = Math.max(-my, Math.min(my, panY));
+  }
+  function resetZoom(){ zoom = 1; panX = 0; panY = 0; pinch = null; panStart = null; }
+  function settleZoom(){
+    // 松手收尾：过小回弹到 1，越大限制在 4，并收敛平移
+    if (zoom <= 1.05){
+      zoom = 1; panX = 0; panY = 0;
+      lbImg.style.transition = 'transform .25s ease-out, opacity .25s ease-out';
+      applyTransform();
+    } else {
+      if (zoom > 4) zoom = 4;
+      clampPan();
+      lbImg.style.transition = 'transform .2s ease-out';
+      applyTransform();
+    }
+  }
+  function pointerCount(){ var n = 0; for (var k in pointers) n++; return n; }
   function dragStart(e){
     if (!lb.classList.contains('open')) return;
     if (e.target.closest('button')) return; // 不拦截按钮点击
+    pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+    try { lb.setPointerCapture(e.pointerId); } catch(err){}
+    if (pointerCount() === 2){
+      // 进入双指捏合：取消滑图/单指拖动
+      dragging = false; activePointer = null; panStart = null;
+      var pts = []; for (var k in pointers) pts.push(pointers[k]);
+      var dx = pts[0].x - pts[1].x, dy = pts[0].y - pts[1].y;
+      pinch = {
+        d0: Math.max(1, Math.sqrt(dx * dx + dy * dy)),
+        z0: zoom, px0: panX, py0: panY,
+        mx: (pts[0].x + pts[1].x) / 2, my: (pts[0].y + pts[1].y) / 2
+      };
+      lbImg.style.transition = 'none';
+      return;
+    }
+    if (zoom > 1){
+      // 已放大：单指拖动查看（dx/dy 记录按下点，用于区分点击与拖动）
+      panStart = { x: e.clientX - panX, y: e.clientY - panY, dx: e.clientX, dy: e.clientY };
+      lbImg.style.transition = 'none';
+      return;
+    }
     activePointer = e.pointerId;
-    try { lb.setPointerCapture(activePointer); } catch(err){}
     dragStartX = e.clientX;
     dragX = 0;
     dragging = true;
     lbImg.style.transition = 'none';
   }
   function dragMove(e){
+    if (!pointers[e.pointerId]) return;
+    pointers[e.pointerId].x = e.clientX;
+    pointers[e.pointerId].y = e.clientY;
+    if (pinch){
+      var pts = []; for (var k in pointers) pts.push(pointers[k]);
+      if (pts.length < 2){ pinch = null; return; }
+      var dx = pts[0].x - pts[1].x, dy = pts[0].y - pts[1].y;
+      var d = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+      zoom = Math.max(1, Math.min(4, pinch.z0 * d / pinch.d0));
+      var mx = (pts[0].x + pts[1].x) / 2, my = (pts[0].y + pts[1].y) / 2;
+      panX = pinch.px0 + (mx - pinch.mx);
+      panY = pinch.py0 + (my - pinch.my);
+      clampPan();
+      applyTransform();
+      return;
+    }
+    if (panStart && zoom > 1){
+      panX = e.clientX - panStart.x;
+      panY = e.clientY - panStart.y;
+      clampPan();
+      applyTransform();
+      return;
+    }
     if (!dragging || e.pointerId !== activePointer) return;
     dragX = e.clientX - dragStartX;
-    lbImg.style.transform = 'translateX(' + dragX + 'px)';
+    applyTransform(dragX);
     lbImg.style.opacity = String(1 - Math.min(Math.abs(dragX) / 600, .35));
   }
+  function doubleTapZoom(e){
+    var now = Date.now();
+    if (now - lastTap > 300){ lastTap = now; return; }
+    lastTap = 0;
+    lbImg.style.transition = 'transform .25s ease-out';
+    if (zoom > 1){
+      zoom = 1; panX = 0; panY = 0;
+    } else {
+      // 以双击点为焦点放大：缩放后保持触点下的内容不动
+      var r = lbImg.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      zoom = 2.5;
+      panX = -(zoom - 1) * (e.clientX - cx);
+      panY = -(zoom - 1) * (e.clientY - cy);
+      clampPan();
+    }
+    applyTransform();
+  }
   function dragEnd(e){
+    if (!pointers[e.pointerId] && !dragging) return;
+    delete pointers[e.pointerId];
+    if (pinch){
+      // 双指捏合结束：剩余手指转单指拖动（不触发滑图）
+      suppressClick = true;
+      setTimeout(function(){ suppressClick = false; }, 120);
+      var rest = null; for (var k in pointers) rest = pointers[k];
+      pinch = null;
+      if (rest && zoom > 1) panStart = { x: rest.x - panX, y: rest.y - panY, dx: rest.x, dy: rest.y };
+      else settleZoom();
+      return;
+    }
+    if (panStart){
+      var tapMove = Math.abs(e.clientX - panStart.dx) + Math.abs(e.clientY - panStart.dy);
+      if (tapMove > 8){
+        suppressClick = true;
+        setTimeout(function(){ suppressClick = false; }, 120);
+      }
+      panStart = null;
+      settleZoom();
+      if (tapMove <= 8 && e.target === lbImg) doubleTapZoom(e);
+      return;
+    }
     if (!dragging || e.pointerId !== activePointer) return;
     dragging = false;
     activePointer = null;
     if (Math.abs(dragX) > 8){
       suppressClick = true;
       setTimeout(function(){ suppressClick = false; }, 120);
+    } else if (e.target === lbImg){
+      doubleTapZoom(e);
+      dragStartX = null;
+      return;
     }
     var threshold = Math.min(80, innerWidth * .2);
     if (Math.abs(dragX) > threshold){
@@ -2432,19 +2558,19 @@ var gallery = (function(){
       current += dragX < 0 ? 1 : -1;
       update();
       lbImg.style.transition = 'none';
-      lbImg.style.transform = 'translateX(' + dragX + 'px)';
+      lbImg.style.transform = 'translate(' + dragX + 'px,0) scale(1)';
       lbImg.style.opacity = String(1 - Math.min(Math.abs(dragX) / 600, .35));
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){
           lbImg.style.transition = 'transform .28s ease-out, opacity .28s ease-out';
-          lbImg.style.transform = 'translateX(0)';
+          lbImg.style.transform = 'translate(0,0) scale(1)';
           lbImg.style.opacity = '1';
         });
       });
     } else {
       // 未过阈值：从当前位置回弹
       lbImg.style.transition = 'transform .25s ease-out, opacity .25s ease-out';
-      lbImg.style.transform = 'translateX(0)';
+      lbImg.style.transform = 'translate(0,0) scale(1)';
       lbImg.style.opacity = '1';
     }
     dragStartX = null;
